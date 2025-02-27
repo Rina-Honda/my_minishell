@@ -10,7 +10,7 @@ assert()
 	echo -n -e "$1" | ./minishell >out 2>&-
 	actual=$?
 	# compare
-	diff cmp out >/dev/null && echo -n ' diff OK ' || echo -n ' diff NG '
+	diff cmp out  && echo -n ' diff OK ' || echo -n ' diff NG '
 	# exit status
 	if [ "$actual" = "$expected" ]; then
 		echo -n ' status OK '
@@ -24,3 +24,7 @@ assert()
 
 # Empty line (EOF)
 assert ''
+
+# Exec path
+assert '/bin/pwd'
+assert '/bin/echo'
