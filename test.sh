@@ -1,5 +1,15 @@
 #!/bin/bash
 
+cat <<EOF | gcc -xc -o a.out -
+#include <stdio.h>
+int main() { printf("hello from a.out\n"); }
+EOF
+
+cleanup()
+{
+	rm -f cmp out a.out
+}
+
 assert()
 {
 	printf '%-30s:' "\"$1\""
@@ -25,6 +35,19 @@ assert()
 # Empty line (EOF)
 assert ''
 
-# Exec path
+# Absolute path
 assert '/bin/pwd'
 assert '/bin/echo'
+
+# command
+assert 'pwd'
+assert 'echo'
+assert 'ls'
+assert './a.out'
+
+# no such command
+assert 'a.out' # カレントディレクトリはPATH変数の値にないので実行不可の仕様
+assert 'nosuchfile'
+
+cleanup
+echo 'all OK'
