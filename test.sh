@@ -49,5 +49,10 @@ assert './a.out'
 assert 'a.out' # カレントディレクトリはPATH変数の値にないので実行不可の仕様
 assert 'nosuchfile'
 
+# Tokenize
+assert 'ls /'
+assert 'echo hello    world     '
+assert 'nosuchfile\n\n'
+
 cleanup
 echo 'all OK'

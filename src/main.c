@@ -6,27 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/02 19:19:46 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/03 14:48:29 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// __attribute__((noreturn))はコンパイラにreturnしないことを伝える
-void	fatal_error(const char *msg) __attribute__((noreturn));
-void	err_exit(const char *locatino, const char *msg, int status)__attribute__((noreturn));
-
-void	fatal_error(const char *msg)
-{
-	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
-	exit(1);
-}
-
-void	err_exit(const char *location, const char *msg, int status)
-{
-	dprintf(STDERR_FILENO, "minishell: %s: %s\n", location, msg);
-	exit(status);
-}
 
 char	*search_path(const char *filename)
 {
@@ -105,13 +89,21 @@ int	exec(char *argv[])
 	}
 }
 
-int	interpret(char *line)
+void	interpret(char *line, int *status_loc)
 {
-	int		status;
-	char	*argv[] = {line, NULL};
+	t_token		*token;
+	char		**argv;
 
-	status = exec(argv);
-	return (status);
+	token = tokenize(line);
+	if (token->kind == TK_EOF)
+		return ;
+	else
+	{
+		argv = token_list_to_argv(token);
+		*status_loc = exec(argv);
+		free_argv(argv);
+	}
+	free_token(token);
 }
 
 int	main(void)
@@ -129,7 +121,7 @@ int	main(void)
 		// lineが空の場合はadd_historyしない仕様
 		if (*line)
 			add_history(line);
-		status = interpret(line);
+		interpret(line, &status);
 		free(line);
 	}
 	exit(status);
