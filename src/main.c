@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/03 14:48:29 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/03 23:11:49 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	interpret(char *line, int *status_loc)
 		return ;
 	else
 	{
+		expand(token);
 		argv = token_list_to_argv(token);
 		*status_loc = exec(argv);
 		free_argv(argv);

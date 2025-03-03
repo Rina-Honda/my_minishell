@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/03 14:47:38 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/03 23:42:35 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 //define
 # define PATH_MAX 4096
+
+# define SINGLE_QUOTE '\''
 
 //typedef
 typedef enum e_token_kind
@@ -47,14 +49,21 @@ typedef struct s_token
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *token);
 
+// expand
+void	expand(t_token *token);
+
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える
 void	fatal_error(const char *msg) __attribute__((noreturn));
 void	err_exit(const char *locatino, const char *msg, int status)__attribute__((noreturn));
 void	assert_error(const char *msg)__attribute__((noreturn));
+void	todo(const char *msg)__attribute__((noreturn));
 
 // free
 void	free_argv(char **argv);
 void	free_token(t_token *token);
+
+// util
+bool	is_metachar(char c);
 
 #endif

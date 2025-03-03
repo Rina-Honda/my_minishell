@@ -5,6 +5,15 @@ cat <<EOF | gcc -xc -o a.out -
 int main() { printf("hello from a.out\n"); }
 EOF
 
+cat <<EOF | gcc -xc -o print_args -
+#include <stdio.h>
+int main(int argc, char **argv)
+{
+	for (int i = 0; argv[i]; i++)
+		printf("argv[%d] = %s\n", i, argv[i]);
+}
+EOF
+
 cleanup()
 {
 	rm -f cmp out a.out
@@ -50,9 +59,17 @@ assert 'a.out' # カレントディレクトリはPATH変数の値にないの�
 assert 'nosuchfile'
 
 # Tokenize
+## unquoted word
 assert 'ls /'
 assert 'echo hello    world     '
 assert 'nosuchfile\n\n'
+
+## single quote
+assert 'echo 'hello''
+assert 'echo hello'world''
+assert "./print_args 'hello   world' '42Tokyo'"
+assert "echo 'hello   world' '42Tokyo'"
+assert "echo '\"hellow   world\"' '42Tokyo'"
 
 cleanup
 echo 'all OK'

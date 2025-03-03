@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:59 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/02 23:49:40 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/03 23:41:56 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,11 @@ void	err_exit(const char *location, const char *msg, int status)
 void	assert_error(const char *msg)
 {
 	dprintf(STDERR_FILENO, "Assert Error: %s\n", msg);
+	exit(255);
+}
+
+void	todo(const char *msg)
+{
+	dprintf(STDERR_FILENO, "TODO: %s\n", msg);
 	exit(255);
 }
