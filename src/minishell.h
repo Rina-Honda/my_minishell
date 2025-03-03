@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/03 23:42:35 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/04 00:56:37 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define PATH_MAX 4096
 
 # define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '\"'
 
 //typedef
 typedef enum e_token_kind

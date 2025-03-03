@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/04 00:03:24 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/04 01:01:39 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,20 @@ void	quote_removal_recursive(t_token *token)
 				ptr++;
 			}
 			// skipe quote
+			ptr++;
+		}
+		else if (*ptr == DOUBLE_QUOTE)
+		{
+			//skip quote
+			ptr++;
+			while (*ptr != DOUBLE_QUOTE)
+			{
+				if (*ptr == '\0')
+					todo("Unclosed double quote");
+				append_char(&new_word, *ptr);
+				ptr++;
+			}
+			//skip quote
 			ptr++;
 		}
 		else

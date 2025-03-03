@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/04 00:46:38 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/04 00:59:09 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,19 @@ t_token	*word(char **rest, char *line)
 			{
 				if (*line == '\0')
 					todo("Unclosed single quote");
+				line++;
+			}
+			//skip quote
+			line++;
+		}
+		else if (*line == DOUBLE_QUOTE)
+		{
+			//skip quote
+			line++;
+			while (*line != DOUBLE_QUOTE)
+			{
+				if (*line == '\0')
+					todo("Unclosed double quote");
 				line++;
 			}
 			//skip quote

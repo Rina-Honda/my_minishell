@@ -71,5 +71,14 @@ assert "./print_args 'hello   world' '42Tokyo'"
 assert "echo 'hello   world' '42Tokyo'"
 assert "echo '\"hellow   world\"' '42Tokyo'"
 
+## double quote
+assert './print_args "hello    world" "42Tokyo"'
+assert 'echo "hello    world" "42Tokyo"'
+assert "echo \"'hello   world'\" \"42Tokyo\""
+
+## combination
+assert "echo hello'     world'"
+assert "echo hello'    world   '\"   42Tokyo   \""
+
 cleanup
 echo 'all OK'
