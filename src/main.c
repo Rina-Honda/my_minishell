@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/03 23:11:49 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/05 23:02:52 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	interpret(char *line, int *status_loc)
 	token = tokenize(line);
 	if (token->kind == TK_EOF)
 		return ;
+	else if (syntax_error)
+		*status_loc = ERROR_TOKENIZE;
 	else
 	{
 		expand(token);

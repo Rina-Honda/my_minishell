@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/04 00:59:09 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/05 23:15:59 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,12 @@ t_token	*word(char **rest, char *line)
 		{
 			//skip quote
 			line++;
-			while (*line != SINGLE_QUOTE)
-			{
-				if (*line == '\0')
-					todo("Unclosed single quote");
+			while (*line && *line != SINGLE_QUOTE)
 				line++;
+			if (*line == '\0')
+			{
+				tokenize_error("Unclosed single quote", &line, line);
+				break ;
 			}
 			//skip quote
 			line++;
@@ -118,11 +119,12 @@ t_token	*word(char **rest, char *line)
 		{
 			//skip quote
 			line++;
-			while (*line != DOUBLE_QUOTE)
-			{
-				if (*line == '\0')
-					todo("Unclosed double quote");
+			while (*line && *line != DOUBLE_QUOTE)
 				line++;
+			if (*line == '\0')
+			{
+				tokenize_error("Unclosed double quote", &line, line);
+				break ;
 			}
 			//skip quote
 			line++;
@@ -142,6 +144,7 @@ t_token	*tokenize(char *line)
 	t_token	head;
 	t_token	*token;
 
+	syntax_error = false;
 	head.next = NULL;
 	token = &head;
 	while (*line)
@@ -159,7 +162,7 @@ t_token	*tokenize(char *line)
 			token = token->next;
 		}
 		else
-			assert_error("Unexpected Token");
+			tokenize_error("Unexpected Token", &line, line);
 	}
 	token->next = new_token(NULL, TK_EOF);
 	return (head.next);

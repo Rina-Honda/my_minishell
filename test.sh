@@ -16,12 +16,12 @@ EOF
 
 cleanup()
 {
-	rm -f cmp out a.out
+	rm -f cmp out a.out print_args
 }
 
 assert()
 {
-	printf '%-30s:' "\"$1\""
+	printf '%-50s:' "[$1]"
 	# bash
 	echo -n -e "$1" | bash >cmp 2>&-
 	expected=$?
@@ -79,6 +79,10 @@ assert "echo \"'hello   world'\" \"42Tokyo\""
 ## combination
 assert "echo hello'     world'"
 assert "echo hello'    world   '\"   42Tokyo   \""
+
+## syntax error
+assert "echo 'a"
+assert 'echo "b'
 
 cleanup
 echo 'all OK'
