@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/05 23:02:52 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/06 00:18:12 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	interpret(char *line, int *status_loc)
 {
 	t_token		*token;
 	char		**argv;
+	t_command	*command;
 
 	token = tokenize(line);
 	if (token->kind == TK_EOF)
@@ -101,10 +102,12 @@ void	interpret(char *line, int *status_loc)
 		*status_loc = ERROR_TOKENIZE;
 	else
 	{
-		expand(token);
-		argv = token_list_to_argv(token);
+		command = parse(token);
+		expand(command);
+		argv = token_list_to_argv(command->args);
 		*status_loc = exec(argv);
 		free_argv(argv);
+		free_command(command);
 	}
 	free_token(token);
 }

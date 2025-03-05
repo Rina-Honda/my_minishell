@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/04 01:01:39 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/06 01:07:48 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,53 @@ void	append_char(char **s, char c)
 	*s = new;
 }
 
-void	quote_removal_recursive(t_token *token)
+void	remove_single_quote(char **dst, char **rest, char *ptr)
+{
+	if (*ptr == SINGLE_QUOTE)
+	{
+		// skipe quote
+		ptr++;
+		while (*ptr != SINGLE_QUOTE)
+		{
+			//parse時にはじいた事象なのでassert_error
+			if (*ptr == '\0')
+				assert_error("Unclosed single quote");
+			append_char(dst, *ptr);
+			ptr++;
+		}
+		// skipe quote
+		ptr++;
+		//ポインタ更新
+		*rest = ptr;
+	}
+	else
+		assert_error("Expected single quote");
+}
+
+void	remove_double_quote(char **dst, char **rest, char *ptr)
+{
+	if (*ptr == DOUBLE_QUOTE)
+	{
+		//skip quote
+		ptr++;
+		while (*ptr != DOUBLE_QUOTE)
+		{
+			//parse時にはじいた事象なのでassert_error
+			if (*ptr == '\0')
+				assert_error("Unclosed double quote");
+			append_char(dst, *ptr);
+			ptr++;
+		}
+		//skip quote
+		ptr++;
+		//ポインタ更新
+		*rest = ptr;
+	}
+	else
+		assert_error("Expected double quote");
+}
+
+void	remove_quote_recursive(t_token *token)
 {
 	char	*new_word;
 	char	*ptr;
@@ -45,33 +91,9 @@ void	quote_removal_recursive(t_token *token)
 	while (*ptr && !is_metachar(*ptr))
 	{
 		if (*ptr == SINGLE_QUOTE)
-		{
-			// skipe quote
-			ptr++;
-			while (*ptr != SINGLE_QUOTE)
-			{
-				if (*ptr == '\0')
-					todo("Unclosed single quote");
-				append_char(&new_word, *ptr);
-				ptr++;
-			}
-			// skipe quote
-			ptr++;
-		}
+			remove_single_quote(&new_word, &ptr, ptr);
 		else if (*ptr == DOUBLE_QUOTE)
-		{
-			//skip quote
-			ptr++;
-			while (*ptr != DOUBLE_QUOTE)
-			{
-				if (*ptr == '\0')
-					todo("Unclosed double quote");
-				append_char(&new_word, *ptr);
-				ptr++;
-			}
-			//skip quote
-			ptr++;
-		}
+			remove_double_quote(&new_word, &ptr, ptr);
 		else
 		{
 			append_char(&new_word, *ptr);
@@ -80,10 +102,18 @@ void	quote_removal_recursive(t_token *token)
 	}
 	free(token->word);
 	token->word = new_word;
-	quote_removal_recursive(token->next);
+	remove_quote_recursive(token->next);
 }
 
-void	expand(t_token *token)
+void	expand_quote_removal_recursive(t_command *command)
 {
-	quote_removal_recursive(token);
+	if (!command)
+		return ;
+	remove_quote_recursive(command->args);
+	expand_quote_removal_recursive(command->next);
+}
+
+void	expand(t_command *command)
+{
+	expand_quote_removal_recursive(command);
 }

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 00:35:06 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/03 00:38:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/06 01:00:14 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,13 @@ void	free_argv(char **argv)
 		i++;
 	}
 	free(argv);
+}
+
+void	free_command(t_command *command)
+{
+	if (!command)
+		return ;
+	free_token(command->args);
+	free_command(command->next);
+	free(command);
 }
