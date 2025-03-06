@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/06 01:11:23 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/07 01:06:17 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,13 @@ t_command	*parse(t_token *token)
 	{
 		//!? わからん→今はまだcommandひとつに全てのtokenを引数として詰めてる
 		if (token->kind == TK_WORD)
+		{
 			append_token_recursive(&command->args, tokendup(token));
+			token = token->next;
+		}
+		//? 初手はワードがくる想定だから？
 		else
-			todo("Implement parser");
-		token = token->next;
+			parse_error("Unexpected Token", &token, token);
 	}
 	return (command);
 }

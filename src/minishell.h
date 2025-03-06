@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/06 01:02:44 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/07 01:17:56 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	err_exit(const char *locatino, const char *msg, int status)__attribute__((n
 void	assert_error(const char *msg)__attribute__((noreturn));
 void	todo(const char *msg)__attribute__((noreturn));
 void	tokenize_error(const char *location, char **rest, char *line);
+void	parse_error(const char *location, t_token **rest, t_token *token);
 
 // free
 void	free_argv(char **argv);
@@ -88,5 +89,6 @@ void	free_command(t_command *command);
 
 // util
 bool	is_metachar(char c);
+bool	at_eof(t_token *token);
 
 #endif
