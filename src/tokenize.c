@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 01:14:01 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 17:21:03 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,6 @@ bool	consume_blank(char **rest, char *line)
 		return (true);
 	}
 	*rest = line;
-	return (false);
-}
-
-bool	starts_with(const char *s, const char *keyword)
-{
-	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
-}
-
-bool	is_control_operator(const char *s)
-{
-	static char *const operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
-	size_t				i = 0;
-
-	while (i < sizeof(operators) / sizeof(*operators))
-	{
-		if (starts_with(s, operators[i]))
-			return (true);
-		i++;
-	}
 	return (false);
 }
 

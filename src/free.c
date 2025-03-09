@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 00:35:06 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 13:26:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 14:43:24 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ void	free_argv(char **argv)
 	free(argv);
 }
 
-void	free_command(t_command *command)
+void	free_node(t_command *node)
 {
-	if (!command)
+	if (!node)
 		return ;
-	free_token(command->args);
-	free_token(command->filename);
-	free_token(command->delimiter);
-	free_command(command->redirects);
-	free_command(command->next);
-	free(command);
+	free_token(node->args);
+	free_token(node->filename);
+	free_token(node->delimiter);
+	free_node(node->redirects);
+	free_node(node->command);
+	free_node(node->next);
+	free(node);
 }

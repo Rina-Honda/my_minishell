@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 00:28:52 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 13:42:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 17:33:07 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,42 @@ int	read_heredoc(const char *delimiter)
 	return (pipefd[0]);
 }
 
-int	open_redirect_file(t_command *redirect)
+int	open_redirect_file(t_command *node)
 {
 	// nodeの終端で return (0)
-	if (!redirect)
+	if (!node)
 		return (0);
-	if (redirect->kind == REDIR_OUT)
-		redirect->filefd = open(redirect->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (redirect->kind == REDIR_IN)
-		redirect->filefd = open(redirect->filename->word, O_RDONLY);
-	else if (redirect->kind == REDIR_APPEND)
-		redirect->filefd = open(redirect->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else if (redirect->kind == REDIR_HEREDOC)
-		//? readlineの読み取りはどこになってる？
-		redirect->filefd = read_heredoc(redirect->delimiter->word);
+	if (node->kind == PIPELINE)
+	{
+		if (open_redirect_file(node->command) < 0)
+			return (-1);
+		if (open_redirect_file(node->next) < 0)
+			return (-1);
+		return (0);
+	}
+	else if (node->kind == SIMPLE_CMD)
+		return (open_redirect_file(node->redirects));
+	else if (node->kind == REDIR_OUT)
+	
+		node->filefd = open(node->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else if (node->kind == REDIR_IN)
+		node->filefd = open(node->filename->word, O_RDONLY);
+	else if (node->kind == REDIR_APPEND)
+		node->filefd = open(node->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	else if (node->kind == REDIR_HEREDOC)
+		//!? readlineの読み取りはどこになってる？→読み取りは端末になってる、コマンド実行するプロセスには渡すだけ
+		node->filefd = read_heredoc(node->delimiter->word);
 	else
 		assert_error("open_redirect_file");
 	// open error
-	if (redirect->filefd < 0)
+	if (node->filefd < 0)
 	{
-		xperror(redirect->filename->word);
+		xperror(node->filename->word);
 		return (-1);
 	}
-	redirect->filefd = stashfd(redirect->filefd);
+	node->filefd = stashfd(node->filefd);
 	// redirect fileがまだあればopenする
-	return (open_redirect_file(redirect->next));
+	return (open_redirect_file(node->next));
 }
 
 bool	is_redirect(t_command *command)

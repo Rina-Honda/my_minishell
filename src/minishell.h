@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 13:33:21 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 17:21:03 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <errno.h>
 
 //define
 # define PATH_MAX 4096
@@ -54,6 +55,7 @@ typedef struct s_token
 
 typedef enum e_command_kind
 {
+	PIPELINE,
 	SIMPLE_CMD,
 	REDIR_OUT,
 	REDIR_IN,
@@ -74,6 +76,10 @@ typedef struct s_command
 	t_token				*delimiter;
 	int					filefd;
 	int					stashed_targetfd;
+	// pipeline
+	int					inpipe[2];
+	int					outpipe[2];
+	struct s_command	*command;
 }	t_command;
 
 //prottype
@@ -86,12 +92,17 @@ t_token	*new_token(char *word, t_token_kind kind);
 t_command	*parse(t_token *token);
 
 // expand
-void	expand(t_command *command);
+void	expand(t_command *node);
 
 // redirect
 int		open_redirect_file(t_command *redirect);
 void	do_redirect(t_command *redirect);
 void	reset_redirect(t_command *redirect);
+
+// pipe
+void	prepare_pipe(t_command *node);
+void	prepare_pipe_child(t_command *node);
+void	prepare_pipe_parent(t_command *node);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える
@@ -106,11 +117,12 @@ void	xperror(const char *location);
 // free
 void	free_argv(char **argv);
 void	free_token(t_token *token);
-void	free_command(t_command *command);
+void	free_node(t_command *node);
 
 // util
 bool	is_blank(char c);
 bool	is_metachar(char c);
 bool	at_eof(t_token *token);
+bool	starts_with(const char *s, const char *keyword);
 
 #endif

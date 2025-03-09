@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 13:32:12 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 17:41:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,27 @@ void	validate_access(const char *path, const char *filename)
 		err_exit(filename, "command not found", 127);
 }
 
-int	exec_cmd(t_command *command)
+pid_t	exec_pipeline(t_command *node)
 {
 	// 環境変数グローバルで使える
 	extern char	**environ;
 	char		*path;
 	pid_t		pid;
-	int			wstatus;
 	char		**argv;
 
+	if (!node)
+		return (-1);
+	prepare_pipe(node);
 	pid = fork();
+	// fork error
 	if (pid < 0)
 		fatal_error("fork");
 	// child process
-	if (pid == 0)
+	else if (pid == 0)
 	{
-		argv = token_list_to_argv(command->args);
+		prepare_pipe_child(node);
+		do_redirect(node->command->redirects);
+		argv = token_list_to_argv(node->command->args);
 		path = argv[0];
 		// full pathじゃなかったら、$PATHでfull pathにする
 		if (strchr(path, '/') == NULL)
@@ -83,32 +88,54 @@ int	exec_cmd(t_command *command)
 		validate_access(path, argv[0]);
 		// execve: pathnameをもとにファイル実行
 		execve(path, argv, environ);
+		reset_redirect(node->command->redirects);
 		fatal_error("execve");
 	}
 	// parent process
-	else
-	{
-		wait(&wstatus);
-		return (WEXITSTATUS(wstatus));
-	}
+	prepare_pipe_parent(node);
+	if (node->next)
+		return (exec_pipeline(node->next));
+	// last_pidを返す
+	return (pid);
 }
 
-int	exec(t_command *command)
+int	wait_pipeline(pid_t last_pid)
 {
-	int	status;
+	pid_t	wait_result;
+	int		status;
+	int		wstatus;
 
-	if (open_redirect_file(command->redirects) < 0)
+	while (1)
+	{
+		wait_result = wait(&wstatus);
+		if (wait_result == last_pid)
+			status = WEXITSTATUS(wstatus);
+		// child processがいなくなったら
+		else if (wait_result < 0)
+		{
+			if (errno == ECHILD)
+				break ;
+		}
+	}
+	return (status);
+}
+
+int	exec(t_command *node)
+{
+	pid_t	last_pid;
+	int		status;
+
+	if (open_redirect_file(node) < 0)
 		return (ERROR_OPEN_REDIR);
-	do_redirect(command->redirects);
-	status = exec_cmd(command);
-	reset_redirect(command->redirects);
+	last_pid = exec_pipeline(node);
+	status = wait_pipeline(last_pid);
 	return (status);
 }
 
 void	interpret(char *line, int *status_loc)
 {
 	t_token		*token;
-	t_command	*command;
+	t_command	*node;
 
 	token = tokenize(line);
 	if (at_eof(token))
@@ -117,15 +144,15 @@ void	interpret(char *line, int *status_loc)
 		*status_loc = ERROR_TOKENIZE;
 	else
 	{
-		command = parse(token);
+		node = parse(token);
 		if (syntax_error)
 			*status_loc = ERROR_PARSE;
 		else
 		{
-			expand(command);
-			*status_loc = exec(command);
+			expand(node);
+			*status_loc = exec(node);
 		}
-		free_command(command);
+		free_node(node);
 	}
 	free_token(token);
 }

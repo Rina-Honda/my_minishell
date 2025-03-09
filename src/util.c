@@ -45,3 +45,8 @@ bool	at_eof(t_token *token)
 {
 	return (token->kind == TK_EOF);
 }
+
+bool	starts_with(const char *s, const char *keyword)
+{
+	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
+}

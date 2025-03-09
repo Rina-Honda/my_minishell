@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 13:13:29 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 17:47:09 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,13 +126,52 @@ void	append_command_element(t_command *command, t_token **rest, t_token *token)
 	*rest = token;
 }
 
-t_command	*parse(t_token *token)
+bool	is_control_operator(t_token *token)
+{
+	static char *const	operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
+	size_t				i;
+
+	i = 0;
+	while (i < sizeof(operators) / sizeof(operators[i]))
+	{
+		if (starts_with(token->word, operators[i]))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+t_command	*simple_command(t_token **rest, t_token *token)
 {
 	t_command	*command;
 
 	command = new_command(SIMPLE_CMD);
 	append_command_element(command, &token, token);
-	while (token && !at_eof(token))
+	// 次のオペレーターが来るまで、そのコマンドのnodeに詰める
+	while (token && !at_eof(token) && !is_control_operator(token))
 		append_command_element(command, &token, token);
+	*rest = token;
 	return (command);
+}
+
+t_command	*pipeline(t_token **rest, t_token *token)
+{
+	t_command	*node;
+
+	node = new_command(PIPELINE);
+	node->inpipe[0] = STDIN_FILENO;
+	node->inpipe[1] = -1;
+	node->outpipe[0] = -1;
+	node->outpipe[1] = STDOUT_FILENO;
+	node->command = simple_command(&token, token);
+	// まだpipeが続いてたら
+	if (equal_operator(token, "|"))
+		node->next = pipeline(&token, token->next);
+	*rest = token;
+	return (node);
+}
+
+t_command	*parse(t_token *token)
+{
+	return (pipeline(&token, token));
 }

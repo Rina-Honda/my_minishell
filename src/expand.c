@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 13:29:41 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 14:41:24 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,21 @@ void	remove_quote_recursive(t_token *token)
 	remove_quote_recursive(token->next);
 }
 
-void	expand_quote_removal_recursive(t_command *command)
+void	expand_quote_removal_recursive(t_command *node)
 {
-	if (!command)
+	if (!node)
 		return ;
 	// tokenはquote処理を行う
-	remove_quote_recursive(command->args);
-	remove_quote_recursive(command->filename);
-	remove_quote_recursive(command->delimiter);
+	remove_quote_recursive(node->args);
+	remove_quote_recursive(node->filename);
+	remove_quote_recursive(node->delimiter);
 	// commandは再帰
-	expand_quote_removal_recursive(command->redirects);
-	expand_quote_removal_recursive(command->next);
+	expand_quote_removal_recursive(node->redirects);
+	expand_quote_removal_recursive(node->command);
+	expand_quote_removal_recursive(node->next);
 }
 
-void	expand(t_command *command)
+void	expand(t_command *node)
 {
-	expand_quote_removal_recursive(command);
+	expand_quote_removal_recursive(node);
 }
