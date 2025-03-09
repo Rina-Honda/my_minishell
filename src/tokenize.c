@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/05 23:15:59 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 01:14:01 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ t_token	*new_token(char *word, t_token_kind kind)
 	token->word = word;
 	token->kind = kind;
 	return (token);
-}
-
-//? 改行もブランク扱い？
-bool	is_blank(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
 }
 
 bool	consume_blank(char **rest, char *line)
@@ -48,7 +42,7 @@ bool	starts_with(const char *s, const char *keyword)
 	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
 }
 
-bool	is_operator(const char *s)
+bool	is_control_operator(const char *s)
 {
 	static char *const operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
 	size_t				i = 0;
@@ -64,7 +58,8 @@ bool	is_operator(const char *s)
 
 t_token	*operator(char **rest, char *line)
 {
-	static char *const	operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
+	// 長いのからみると、"<<"と"<"とかを識別できる
+	static char *const	operators[] = {">>", "<<", "||", "&&", ";;", ">", "<", "&", ";", "(", ")", "|", "\n"};
 	size_t	i = 0;
 	char	*operator;
 
@@ -82,11 +77,6 @@ t_token	*operator(char **rest, char *line)
 		i++;
 	}
 	assert_error("Unexpected operator");
-}
-
-bool	is_metachar(char c)
-{
-	return (c && ft_strchr("|&;()<> \t\n", c));
 }
 
 bool	is_word(const char *s)
@@ -129,6 +119,7 @@ t_token	*word(char **rest, char *line)
 			//skip quote
 			line++;
 		}
+		// quote以外の通常文字
 		else
 			line++;
 	}
@@ -151,7 +142,7 @@ t_token	*tokenize(char *line)
 	{
 		if (consume_blank(&line, line))
 			continue ;
-		else if (is_operator(line))
+		else if (is_metachar(*line))
 		{
 			token->next = operator(&line, line);
 			token = token->next;

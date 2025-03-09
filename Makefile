@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/06 01:02:45 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/09 00:56:09 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRCS = src/main.c \
 	src/tokenize.c \
 	src/parse.c \
 	src/expand.c \
+	src/redirect.c \
+	src/util.c \
 	src/error.c \
 	src/free.c \
 

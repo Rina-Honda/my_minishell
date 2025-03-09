@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/06 00:18:12 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 01:30:55 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ void	validate_access(const char *path, const char *filename)
 		err_exit(filename, "command not found", 127);
 }
 
-int	exec(char *argv[])
+int	exec_cmd(t_command *command)
 {
 	// 環境変数グローバルで使える
 	extern char	**environ;
-	char		*path = argv[0];
+	char		*path;
 	pid_t		pid;
 	int			wstatus;
+	char		**argv;
 
 	pid = fork();
 	if (pid < 0)
@@ -74,10 +75,13 @@ int	exec(char *argv[])
 	// child process
 	if (pid == 0)
 	{
-		// execve: pathnameをもとにファイル実行
+		argv = token_list_to_argv(command->args);
+		path = argv[0];
+		// full pathじゃなかったら、$PATHでfull pathにする
 		if (strchr(path, '/') == NULL)
 			path = search_path(path);
 		validate_access(path, argv[0]);
+		// execve: pathnameをもとにファイル実行
 		execve(path, argv, environ);
 		fatal_error("execve");
 	}
@@ -89,24 +93,37 @@ int	exec(char *argv[])
 	}
 }
 
+int	exec(t_command *command)
+{
+	int	status;
+
+	open_redirect_file(command->redirects);
+	do_redirect(command->redirects);
+	status = exec_cmd(command);
+	reset_redirect(command->redirects);
+	return (status);
+}
+
 void	interpret(char *line, int *status_loc)
 {
 	t_token		*token;
-	char		**argv;
 	t_command	*command;
 
 	token = tokenize(line);
-	if (token->kind == TK_EOF)
+	if (at_eof(token))
 		return ;
 	else if (syntax_error)
 		*status_loc = ERROR_TOKENIZE;
 	else
 	{
 		command = parse(token);
-		expand(command);
-		argv = token_list_to_argv(command->args);
-		*status_loc = exec(argv);
-		free_argv(argv);
+		if (syntax_error)
+			*status_loc = ERROR_TOKENIZE;
+		else
+		{
+			expand(command);
+			*status_loc = exec(command);
+		}
 		free_command(command);
 	}
 	free_token(token);

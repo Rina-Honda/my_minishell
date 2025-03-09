@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/07 01:17:56 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 01:30:55 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+# include <fcntl.h>
 
 //define
 # define PATH_MAX 4096
@@ -52,13 +53,21 @@ typedef struct s_token
 typedef enum e_command_kind
 {
 	SIMPLE_CMD,
+	REDIR_OUT,
 }	t_command_kind;
 
 typedef struct s_command
 {
-	t_token				*args;
 	t_command_kind		kind;
 	struct s_command	*next;
+	// comamnd
+	t_token				*args;
+	struct s_command	*redirects;
+	//redirect
+	int					targetfd;
+	t_token				*filename;
+	int					filefd;
+	int					stashed_targetfd;
 }	t_command;
 
 //prottype
@@ -72,6 +81,11 @@ t_command	*parse(t_token *token);
 
 // expand
 void	expand(t_command *command);
+
+// redirect
+void	open_redirect_file(t_command *redirect);
+void	do_redirect(t_command *redirect);
+void	reset_redirect(t_command *redirect);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える
@@ -88,6 +102,7 @@ void	free_token(t_token *token);
 void	free_command(t_command *command);
 
 // util
+bool	is_blank(char c);
 bool	is_metachar(char c);
 bool	at_eof(t_token *token);
 
