@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 23:04:32 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 23:47:50 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	expand_quote_removal_recursive(t_command *node)
 	remove_quote_recursive(node->args);
 	remove_quote_recursive(node->filename);
 	remove_quote_recursive(node->delimiter);
-	// commandは再帰
+	// nodeは再帰
 	expand_quote_removal_recursive(node->redirects);
 	expand_quote_removal_recursive(node->command);
 	expand_quote_removal_recursive(node->next);
@@ -232,7 +232,7 @@ void	expand_variable_token_recursive(t_token *token)
 	new_word = ft_calloc(1, sizeof(char));
 	if (!new_word)
 		fatal_error("ft_calloc");
-	while (*ptr && !is_metachar(*ptr))
+	while (*ptr && !is_metachar_notblank(*ptr))
 	{
 		if (*ptr == SINGLE_QUOTE)
 			append_single_quote(&new_word, &ptr, ptr);

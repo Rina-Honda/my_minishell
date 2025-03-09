@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 01:23:51 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 23:47:50 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ bool	is_metachar(char c)
 	if (is_blank(c))
 		return (true);
 	return (c && ft_strchr("|&;()<> \t\n", c));
+}
+
+bool	is_metachar_notblank(char c)
+{
+	return (c && ft_strchr("|&;()<>", c));
 }
 
 bool	at_eof(t_token *token)

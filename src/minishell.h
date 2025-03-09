@@ -122,6 +122,7 @@ void	free_node(t_command *node);
 // util
 bool	is_blank(char c);
 bool	is_metachar(char c);
+bool	is_metachar_notblank(char c);
 bool	at_eof(t_token *token);
 bool	starts_with(const char *s, const char *keyword);
 
