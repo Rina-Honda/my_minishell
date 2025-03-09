@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 10:51:02 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 11:52:48 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,17 @@ t_command	*redirect_in(t_token **rest, t_token *token)
 	return (command);
 }
 
+t_command	*redirect_append(t_token **rest, t_token *token)
+{
+	t_command	*command;
+
+	command = new_command(REDIR_APPEND);
+	command->filename = tokendup(token->next);
+	command->targetfd = STDOUT_FILENO;
+	*rest = token->next->next;
+	return (command);
+}
+
 void	append_command_element(t_command *command, t_token **rest, t_token *token)
 {
 	if (token->kind == TK_WORD)
@@ -94,6 +105,8 @@ void	append_command_element(t_command *command, t_token **rest, t_token *token)
 		append_command_recursive(&command->redirects, redirect_out(&token, token));
 	else if (equal_operator(token, "<") && token->next->kind == TK_WORD)
 		append_command_recursive(&command->redirects, redirect_in(&token, token));
+	else if (equal_operator(token, ">>") && token->next->kind == TK_WORD)
+		append_command_recursive(&command->redirects, redirect_append(&token, token));
 	else
 		todo("append_command_element");
 	// 読んだ分更新

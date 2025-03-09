@@ -137,5 +137,9 @@ assert 'cat <f1<f2<f3'
 rm -f f1 f2 f3
 assert 'cat <hoge'
 
+## Appending Redirect outfile
+assert 'pwd >>pwd.txt' 'pwd.txt'
+assert 'pwd >>pwd.txt \n pwd >>pwd.txt' 'pwd.txt'
+
 cleanup
 echo 'all OK'

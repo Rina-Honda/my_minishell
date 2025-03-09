@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 11:21:18 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 11:39:07 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef enum e_command_kind
 	SIMPLE_CMD,
 	REDIR_OUT,
 	REDIR_IN,
+	REDIR_APPEND,
 }	t_command_kind;
 
 typedef struct s_command
