@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 01:30:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 10:53:46 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	interpret(char *line, int *status_loc)
 	{
 		command = parse(token);
 		if (syntax_error)
-			*status_loc = ERROR_TOKENIZE;
+			*status_loc = ERROR_PARSE;
 		else
 		{
 			expand(command);

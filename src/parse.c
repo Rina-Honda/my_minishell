@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 01:30:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 10:51:02 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	append_command_recursive(t_command **command, t_command *element)
 		*command = element;
 		return ;
 	}
+	// すでにredirectが入っていたら、末尾に追記
 	append_command_recursive(&(*command)->next, element);
 }
 
@@ -71,6 +72,17 @@ t_command	*redirect_out(t_token **rest, t_token *token)
 	return (command);
 }
 
+t_command	*redirect_in(t_token **rest, t_token *token)
+{
+	t_command	*command;
+
+	command = new_command(REDIR_IN);
+	command->filename = tokendup(token->next);
+	command->targetfd = STDIN_FILENO;
+	*rest = token->next->next;
+	return (command);
+}
+
 void	append_command_element(t_command *command, t_token **rest, t_token *token)
 {
 	if (token->kind == TK_WORD)
@@ -79,8 +91,9 @@ void	append_command_element(t_command *command, t_token **rest, t_token *token)
 		token = token->next;
 	}
 	else if (equal_operator(token, ">") && token->next->kind == TK_WORD)
-		// redirectにoutfileがなかったら入れる
 		append_command_recursive(&command->redirects, redirect_out(&token, token));
+	else if (equal_operator(token, "<") && token->next->kind == TK_WORD)
+		append_command_recursive(&command->redirects, redirect_in(&token, token));
 	else
 		todo("append_command_element");
 	// 読んだ分更新
