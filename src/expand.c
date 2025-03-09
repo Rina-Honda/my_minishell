@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 14:41:24 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 23:04:32 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	append_char(char **s, char c)
 
 	size = 2;
 	if (*s)
-		size += strlen(*s);
+		size += ft_strlen(*s);
 	new = malloc(size);
 	if (!new)
 		fatal_error("malloc");
@@ -87,7 +87,9 @@ void	remove_quote_recursive(t_token *token)
 	if (token == NULL || token->kind != TK_WORD || token->word == NULL)
 		return ;
 	ptr = token->word;
-	new_word = NULL;
+	new_word = ft_calloc(1, sizeof(char));
+	if (!new_word)
+		fatal_error("ft_calloc");
 	while (*ptr && !is_metachar(*ptr))
 	{
 		if (*ptr == SINGLE_QUOTE)
@@ -119,7 +121,149 @@ void	expand_quote_removal_recursive(t_command *node)
 	expand_quote_removal_recursive(node->next);
 }
 
+
+bool	is_alpha_underscore(char c)
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+bool	is_alpha_num_underscore(char c)
+{
+	return (is_alpha_underscore(c) || ft_isdigit(c));
+}
+
+bool	is_variable(char *s)
+{
+	return (s[0] == '$' && is_alpha_underscore(s[1]));
+}
+
+void	expand_variable_str(char **dst, char **rest, char *ptr)
+{
+	char	*name;
+	char	*value;
+
+	name = ft_calloc(1, sizeof(char));
+	if (!name)
+		fatal_error("ft_calloc");
+	if (*ptr != '$')
+		assert_error("Expected dollar sign");
+	ptr++;
+	if (!is_alpha_underscore(*ptr))
+		assert_error("Variable must starts with alpha or underscore.");
+	append_char(&name, *ptr);
+	ptr++;
+	while (is_alpha_num_underscore(*ptr))
+	{
+		append_char(&name, *ptr);
+		ptr++;
+	}
+	value = getenv(name);
+	free(name);
+	if (value)
+	{
+		while (*value)
+		{
+			append_char(dst, *value);
+			value++;
+		}
+	}
+	*rest = ptr;
+}
+
+void	append_single_quote(char **dst, char **rest, char *ptr)
+{
+	if (*ptr == SINGLE_QUOTE)
+	{
+		// まだskip quoteしない
+		append_char(dst, *ptr);
+		ptr++;
+		while (*ptr != SINGLE_QUOTE)
+		{
+			if (*ptr == '\0')
+				assert_error("Unclosed single quote");
+			append_char(dst, *ptr);
+			ptr++;
+		}
+		// まだskip quoteしない
+		append_char(dst, *ptr);
+		ptr++;
+		*rest = ptr;
+	}
+	else
+		assert_error("Expected single quote");
+}
+
+void	append_double_quote(char **dst, char **rest, char *ptr)
+{
+	if (*ptr == DOUBLE_QUOTE)
+	{
+		// まだskip quoteしない
+		append_char(dst, *ptr);
+		ptr++;
+		while (*ptr != DOUBLE_QUOTE)
+		{
+			if (*ptr == '\0')
+				assert_error("Unclosed double quote");
+			else if (is_variable(ptr))
+				expand_variable_str(dst, &ptr, ptr);
+			else
+			{
+				append_char(dst, *ptr);
+				ptr++;
+			}
+		}
+		// まだskip quoteしない
+		append_char(dst, *ptr);
+		ptr++;
+		*rest = ptr;
+	}
+	else
+		assert_error("Expected double quote");
+}
+
+void	expand_variable_token_recursive(t_token *token)
+{
+	char	*new_word;
+	char	*ptr;
+
+	if (!token || token->kind != TK_WORD || !token->word)
+		return ;
+	ptr = token->word;
+	new_word = ft_calloc(1, sizeof(char));
+	if (!new_word)
+		fatal_error("ft_calloc");
+	while (*ptr && !is_metachar(*ptr))
+	{
+		if (*ptr == SINGLE_QUOTE)
+			append_single_quote(&new_word, &ptr, ptr);
+		else if (*ptr == DOUBLE_QUOTE)
+			append_double_quote(&new_word, &ptr, ptr);
+		else if (is_variable(ptr))
+			expand_variable_str(&new_word, &ptr, ptr);
+		else
+		{
+			append_char(&new_word, *ptr);
+			ptr++;
+		}
+	}
+	free(token->word);
+	token->word = new_word;
+	expand_variable_token_recursive(token->next);
+}
+
+void	expand_variable_recursive(t_command *node)
+{
+	if (!node)
+		return ;
+	expand_variable_token_recursive(node->args);
+	expand_variable_token_recursive(node->filename);
+	expand_variable_recursive(node->redirects);
+	expand_variable_recursive(node->command);
+	expand_variable_recursive(node->next);
+}
+
 void	expand(t_command *node)
 {
+	expand_variable_recursive(node);
 	expand_quote_removal_recursive(node);
 }
