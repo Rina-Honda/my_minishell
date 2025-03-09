@@ -36,6 +36,7 @@
 
 // global variable
 extern bool	syntax_error;
+extern int	last_status;
 
 //typedef
 typedef enum e_token_kind

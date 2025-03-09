@@ -6,11 +6,13 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 17:41:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/10 00:10:35 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	last_status;
 
 char	*search_path(const char *filename)
 {
@@ -160,10 +162,9 @@ void	interpret(char *line, int *status_loc)
 int	main(void)
 {
 	char	*line;
-	int		status;
 
 	rl_outstream = stderr;
-	status = 0;
+	last_status = 0;
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -172,8 +173,8 @@ int	main(void)
 		// lineが空の場合はadd_historyしない仕様
 		if (*line)
 			add_history(line);
-		interpret(line, &status);
+		interpret(line, &last_status);
 		free(line);
 	}
-	exit(status);
+	exit(last_status);
 }

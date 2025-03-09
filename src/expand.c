@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 23:47:50 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/10 00:25:56 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,32 @@ void	expand_variable_str(char **dst, char **rest, char *ptr)
 	*rest = ptr;
 }
 
+bool	is_special_parameter(char *s)
+{
+	return (s[0] == '$' || s[1] == '?');
+}
+
+void	append_num(char **dst, unsigned int num)
+{
+	if (num == 0)
+	{
+		append_char(dst, '0');
+		return ;
+	}
+	if (num / 10 != 0)
+		append_num(dst, num / 10);
+	append_char(dst, '0' + (num % 10));
+}
+
+void	expand_special_parameter_str(char **dst, char **rest, char *ptr)
+{
+	if (!is_special_parameter(ptr))
+		assert_error("Expand special parameter");
+	ptr += 2;
+	append_num(dst, last_status);
+	*rest = ptr;
+}
+
 void	append_single_quote(char **dst, char **rest, char *ptr)
 {
 	if (*ptr == SINGLE_QUOTE)
@@ -206,6 +232,8 @@ void	append_double_quote(char **dst, char **rest, char *ptr)
 				assert_error("Unclosed double quote");
 			else if (is_variable(ptr))
 				expand_variable_str(dst, &ptr, ptr);
+			else if (is_special_parameter(ptr))
+				expand_special_parameter_str(dst, &ptr, ptr);
 			else
 			{
 				append_char(dst, *ptr);
@@ -240,6 +268,8 @@ void	expand_variable_token_recursive(t_token *token)
 			append_double_quote(&new_word, &ptr, ptr);
 		else if (is_variable(ptr))
 			expand_variable_str(&new_word, &ptr, ptr);
+		else if (is_special_parameter(ptr)) // $? は is_variableに引っかからない
+			expand_special_parameter_str(&new_word, &ptr, ptr);
 		else
 		{
 			append_char(&new_word, *ptr);
