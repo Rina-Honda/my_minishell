@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 10:53:46 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 13:32:12 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int	exec(t_command *command)
 {
 	int	status;
 
-	open_redirect_file(command->redirects);
+	if (open_redirect_file(command->redirects) < 0)
+		return (ERROR_OPEN_REDIR);
 	do_redirect(command->redirects);
 	status = exec_cmd(command);
 	reset_redirect(command->redirects);

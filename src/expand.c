@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 00:04:18 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 13:29:41 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	expand_quote_removal_recursive(t_command *command)
 	// tokenはquote処理を行う
 	remove_quote_recursive(command->args);
 	remove_quote_recursive(command->filename);
+	remove_quote_recursive(command->delimiter);
 	// commandは再帰
 	expand_quote_removal_recursive(command->redirects);
 	expand_quote_removal_recursive(command->next);

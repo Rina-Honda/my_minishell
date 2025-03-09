@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 11:39:07 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/09 13:33:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define PATH_MAX 4096
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
+# define ERROR_OPEN_REDIR 1
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
@@ -57,6 +58,7 @@ typedef enum e_command_kind
 	REDIR_OUT,
 	REDIR_IN,
 	REDIR_APPEND,
+	REDIR_HEREDOC,
 }	t_command_kind;
 
 typedef struct s_command
@@ -66,9 +68,10 @@ typedef struct s_command
 	// comamnd
 	t_token				*args;
 	struct s_command	*redirects;
-	//redirect
+	// redirect
 	int					targetfd;
 	t_token				*filename;
+	t_token				*delimiter;
 	int					filefd;
 	int					stashed_targetfd;
 }	t_command;
