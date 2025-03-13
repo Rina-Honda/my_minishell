@@ -6,12 +6,14 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/12 07:24:52 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 01:09:51 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _POSIX_C_SOURCE 200809L
 
 //include
 # include "../libfts/libft.h"
@@ -34,12 +36,6 @@
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
-
-// global variable
-extern bool						syntax_error;
-extern int						last_status;
-extern bool						readline_interrupted;
-extern volatile sig_atomic_t	sig;
 
 //typedef
 typedef enum e_token_kind
@@ -86,6 +82,25 @@ typedef struct s_command
 	struct s_command	*command;
 }	t_command;
 
+typedef struct s_item
+{
+	char			*name;
+	char			*value;
+	struct s_item	*next;
+}	t_item;
+
+typedef struct s_map
+{
+	t_item	item_head;
+}	t_map;
+
+// global variable
+extern bool						syntax_error;
+extern int						last_status;
+extern bool						readline_interrupted;
+extern volatile sig_atomic_t	sig;
+extern t_map					*envmap;
+
 //prottype
 // tokenize
 t_token	*tokenize(char *line);
@@ -115,6 +130,18 @@ void	prepare_pipe_parent(t_command *node);
 void	setup_signal(void);
 void	reset_signal(void);
 
+// env
+void	init_env(void);
+char	*ft_getenv(const char *name);
+char	**get_environ(t_map *map);
+
+// map
+t_map	*map_new(void);
+int		map_put(t_map *map, const char *str, bool allow_empty_value);
+char	*map_get(t_map *map, const char *name);
+size_t	map_len(t_map *map, bool count_null_value);
+char	*item_get_string(t_item *item);
+
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える
 void	fatal_error(const char *msg) __attribute__((noreturn));
@@ -136,5 +163,7 @@ bool	is_metachar(char c);
 bool	is_metachar_notblank(char c);
 bool	at_eof(t_token *token);
 bool	starts_with(const char *s, const char *keyword);
+bool	is_alpha_underscore(char c);
+bool	is_alpha_num_underscore(char c);
 
 #endif

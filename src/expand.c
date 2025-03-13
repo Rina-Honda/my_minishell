@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/10 00:25:56 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/13 23:21:54 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,6 @@ void	expand_quote_removal_recursive(t_command *node)
 	expand_quote_removal_recursive(node->next);
 }
 
-
-bool	is_alpha_underscore(char c)
-{
-	return (ft_isalpha(c) || c == '_');
-}
-
-bool	is_alpha_num_underscore(char c)
-{
-	return (is_alpha_underscore(c) || ft_isdigit(c));
-}
-
 bool	is_variable(char *s)
 {
 	return (s[0] == '$' && is_alpha_underscore(s[1]));
@@ -157,7 +146,7 @@ void	expand_variable_str(char **dst, char **rest, char *ptr)
 		append_char(&name, *ptr);
 		ptr++;
 	}
-	value = getenv(name);
+	value = ft_getenv(name);
 	free(name);
 	if (value)
 	{

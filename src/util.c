@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 23:58:07 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/13 22:38:18 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,14 @@ bool	at_eof(t_token *token)
 bool	starts_with(const char *s, const char *keyword)
 {
 	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
+}
+
+bool	is_alpha_underscore(char c)
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+bool	is_alpha_num_underscore(char c)
+{
+	return (is_alpha_underscore(c) || ft_isdigit(c));
 }
