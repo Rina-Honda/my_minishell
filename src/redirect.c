@@ -6,11 +6,13 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 00:28:52 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 17:33:07 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/12 07:55:04 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	readline_interrupted = false;
 
 int	stashfd(int fd)
 {
@@ -32,12 +34,18 @@ int	read_heredoc(const char *delimiter)
 	// process間通信できるようにpipe
 	if (pipe(pipefd) < 0)
 		fatal_error("pipe");
+	readline_interrupted = false;
 	while (1)
 	{
 		// gnlじゃなくていい？
 		line = readline("> ");
 		if (line == NULL)
 			break ;
+		if (readline_interrupted)
+		{
+			free(line);
+			break ;
+		}
 		if (strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -49,6 +57,11 @@ int	read_heredoc(const char *delimiter)
 	}
 	// pipeの書き込みを使い終わったので閉じる
 	close(pipefd[1]);
+	if (readline_interrupted)
+	{
+		close(pipefd[0]);
+		return (-1);
+	}
 	// pipeの読み取りfdを返す
 	return (pipefd[0]);
 }
@@ -69,7 +82,6 @@ int	open_redirect_file(t_command *node)
 	else if (node->kind == SIMPLE_CMD)
 		return (open_redirect_file(node->redirects));
 	else if (node->kind == REDIR_OUT)
-	
 		node->filefd = open(node->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (node->kind == REDIR_IN)
 		node->filefd = open(node->filename->word, O_RDONLY);
@@ -82,8 +94,9 @@ int	open_redirect_file(t_command *node)
 		assert_error("open_redirect_file");
 	// open error
 	if (node->filefd < 0)
-	{
-		xperror(node->filename->word);
+	{	// here doc はfilename->word設定してない
+		if (node->kind == REDIR_OUT || node->kind == REDIR_IN || node->kind == REDIR_APPEND)
+			xperror(node->filename->word);
 		return (-1);
 	}
 	node->filefd = stashfd(node->filefd);

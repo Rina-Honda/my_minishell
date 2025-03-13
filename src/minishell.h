@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 17:21:03 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/12 07:24:52 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <signal.h>
 
 //define
 # define PATH_MAX 4096
@@ -35,8 +36,10 @@
 # define DOUBLE_QUOTE '\"'
 
 // global variable
-extern bool	syntax_error;
-extern int	last_status;
+extern bool						syntax_error;
+extern int						last_status;
+extern bool						readline_interrupted;
+extern volatile sig_atomic_t	sig;
 
 //typedef
 typedef enum e_token_kind
@@ -95,6 +98,9 @@ t_command	*parse(t_token *token);
 // expand
 void	expand(t_command *node);
 
+// exec
+int		exec(t_command *node);
+
 // redirect
 int		open_redirect_file(t_command *redirect);
 void	do_redirect(t_command *redirect);
@@ -104,6 +110,10 @@ void	reset_redirect(t_command *redirect);
 void	prepare_pipe(t_command *node);
 void	prepare_pipe_child(t_command *node);
 void	prepare_pipe_parent(t_command *node);
+
+// signal
+void	setup_signal(void);
+void	reset_signal(void);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える

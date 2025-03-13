@@ -2,6 +2,7 @@
 RED="\033[31m"
 GREEN="\033[32m"
 RESET="\033[0m"
+YELLOW="\033[33m"
 OK=$GREEN"OK"$RESET
 NG=$RED"NG"$RESET
 
@@ -19,9 +20,14 @@ int main(int argc, char **argv)
 }
 EOF
 
+print_desc()
+{
+	echo -e $YELLOW"$1"$RESET
+}
+
 cleanup()
 {
-	rm -f cmp out a.out print_args
+	rm -f cmp out a.out print_args infinite_loop
 }
 
 assert()
@@ -161,5 +167,49 @@ assert 'echo $?'
 assert 'invalid\necho $?\necho $?'
 assert 'exit42\necho $?\necho $?'
 assert 'exit42\n\necho $?\necho $?'
+
+# Signal handling
+echo "int main() { while (1) ; }" | gcc -xc -o infinite_loop -
+
+## Signal to shell process
+print_desc "SIGTERM to SHELL"
+(sleep 0.01; pkill -SIGTERM bash;
+ sleep 0.01; pkill -SIGTERM minishell) &
+assert './infinite_loop' 2>/dev/null
+
+print_desc "SIGQUIT to SHELL"
+(sleep 0.01; pkill -SIGQUIT bash;
+ sleep 0.01; pkill -SIGTERM bash;
+ sleep 0.01; pkill -SIGQUIT minishell;
+ sleep 0.01; pkill -SIGTERM minishell) &
+assert './infinite_loop' 2>/dev/null
+
+print_desc "SIGINT to SHELL"
+(sleep 0.01; pkill -SIGINT bash;
+ sleep 0.01; pkill -SIGTERM bash;
+ sleep 0.01; pkill -SIGINT minishell;
+ sleep 0.01; pkill -SIGTERM minishell) &
+assert './infinite_loop' 2>/dev/null
+
+## Signal to child process
+print_desc "SIGTERM to child process"
+(sleep 0.01; pkill -SIGTERM infinite_loop;
+ sleep 0.01; pkill -SIGTERM infinite_loop) &
+assert './infinite_loop'
+
+print_desc "SIGINT to child process"
+(sleep 0.01; pkill -SIGINT infinite_loop;
+ sleep 0.01; pkill -SIGINT infinite_loop) &
+assert './infinite_loop'
+
+print_desc "SIGQUIT to child process"
+(sleep 0.01; pkill -SIGQUIT infinite_loop;
+ sleep 0.01; pkill -SIGQUIT infinite_loop) &
+assert './infinite_loop'
+
+print_desc "SIGUSR1 to child process"
+(sleep 0.01; pkill -SIGUSR1 infinite_loop;
+ sleep 0.01; pkill -SIGUSR1 infinite_loop) &
+assert './infinite_loop'
 
 cleanup
