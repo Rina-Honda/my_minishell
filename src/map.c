@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 01:12:29 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 21:32:32 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,4 +181,30 @@ char	*item_get_string(t_item *item)
 		ft_strlcat(str, item->value, str_size);
 	}
 	return (str);
+}
+
+int	map_unset(t_map *map, const char *name)
+{
+	t_item	*current;
+	t_item	*prev;
+
+	if (!name || !is_identifier(name))
+		return (-1);
+	prev = &map->item_head;
+	current = map->item_head.next;
+	while (current)
+	{
+		if (strcmp(current->name, name) == 0)
+		{
+			// freeの前に前後をつなげとく
+			prev->next = current->next;
+			free(current->name);
+			free(current->value);
+			free(current);
+			return (0);
+		}
+		prev = prev->next;
+		current = current->next;
+	}
+	return (0);
 }
