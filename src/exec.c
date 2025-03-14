@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 10:31:01 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 21:04:00 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,28 @@ void	validate_access(const char *path, const char *filename)
 		err_exit(filename, "command not found", 127);
 }
 
+int	exec_nonbuiltin(t_command *node)
+{
+	char	*path;
+	char	**argv;
+
+	do_redirect(node->command->redirects);
+	argv = token_list_to_argv(node->command->args);
+	path = argv[0];
+	// full pathじゃなかったら、$PATHでfull pathにする
+	if (strchr(path, '/') == NULL)
+		path = search_path(path);
+	validate_access(path, argv[0]);
+	// execve: pathnameをもとにファイル実行
+	execve(path, argv, get_environ(envmap));
+	free(argv);
+	reset_redirect(node->command->redirects);
+	fatal_error("execve");
+}
+
 pid_t	exec_pipeline(t_command *node)
 {
-	extern char	**environ;
-	char		*path;
 	pid_t		pid;
-	char		**argv;
 
 	if (!node)
 		return (-1);
@@ -80,18 +96,10 @@ pid_t	exec_pipeline(t_command *node)
 		// child processではCtrl + CとCtrl + \ をデフォルトに戻す
 		reset_signal();
 		prepare_pipe_child(node);
-		do_redirect(node->command->redirects);
-		argv = token_list_to_argv(node->command->args);
-		path = argv[0];
-		// full pathじゃなかったら、$PATHでfull pathにする
-		if (strchr(path, '/') == NULL)
-			path = search_path(path);
-		validate_access(path, argv[0]);
-		// execve: pathnameをもとにファイル実行
-		execve(path, argv, environ);
-		free(argv);
-		reset_redirect(node->command->redirects);
-		fatal_error("execve");
+		if (is_builtin(node))
+			exit(exec_builtin(node));
+		else
+			exec_nonbuiltin(node);
 	}
 	// parent process
 	prepare_pipe_parent(node);

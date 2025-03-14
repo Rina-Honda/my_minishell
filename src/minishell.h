@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 10:20:58 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 21:03:29 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	expand(t_command *node);
 
 // exec
 int		exec(t_command *node);
+int		exec_nonbuiltin(t_command *node)__attribute__((noreturn));
 
 // redirect
 int		open_redirect_file(t_command *redirect);
@@ -146,6 +147,7 @@ char	*item_get_string(t_item *item);
 bool	is_builtin(t_command *node);
 int		exec_builtin(t_command *node);
 int		builtin_exit(char **argv);
+int		builtin_export(char **argv);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える
@@ -156,6 +158,7 @@ void	todo(const char *msg)__attribute__((noreturn));
 void	tokenize_error(const char *location, char **rest, char *line);
 void	parse_error(const char *location, t_token **rest, t_token *token);
 void	xperror(const char *location);
+void	builtin_error(const char *func, const char *name, const char *err);
 
 // free
 void	free_argv(char **argv);
