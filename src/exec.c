@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 01:08:33 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 10:31:01 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	validate_access(const char *path, const char *filename)
 
 pid_t	exec_pipeline(t_command *node)
 {
+	extern char	**environ;
 	char		*path;
 	pid_t		pid;
 	char		**argv;
@@ -87,7 +88,8 @@ pid_t	exec_pipeline(t_command *node)
 			path = search_path(path);
 		validate_access(path, argv[0]);
 		// execve: pathnameをもとにファイル実行
-		execve(path, argv, get_environ(envmap));
+		execve(path, argv, environ);
+		free(argv);
 		reset_redirect(node->command->redirects);
 		fatal_error("execve");
 	}
@@ -136,7 +138,12 @@ int	exec(t_command *node)
 
 	if (open_redirect_file(node) < 0)
 		return (ERROR_OPEN_REDIR);
-	last_pid = exec_pipeline(node);
-	status = wait_pipeline(last_pid);
+	if (!node->next && is_builtin(node))
+		status = exec_builtin(node);
+	else
+	{
+		last_pid = exec_pipeline(node);
+		status = wait_pipeline(last_pid);
+	}
 	return (status);
 }

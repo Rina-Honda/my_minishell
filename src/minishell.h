@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 01:09:51 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 10:20:58 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,11 @@ int		map_put(t_map *map, const char *str, bool allow_empty_value);
 char	*map_get(t_map *map, const char *name);
 size_t	map_len(t_map *map, bool count_null_value);
 char	*item_get_string(t_item *item);
+
+// builtin
+bool	is_builtin(t_command *node);
+int		exec_builtin(t_command *node);
+int		builtin_exit(char **argv);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える

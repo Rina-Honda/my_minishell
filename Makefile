@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/13 23:16:22 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/14 10:19:46 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ SRCS = src/main.c \
 	src/signal.c \
 	src/env.c \
 	src/map.c \
+	src/builtin.c \
+	src/builtin_exit.c \
 	src/util.c \
 	src/error.c \
 	src/free.c \

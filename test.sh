@@ -212,4 +212,13 @@ print_desc "SIGUSR1 to child process"
  sleep 0.01; pkill -SIGUSR1 infinite_loop) &
 assert './infinite_loop'
 
+# Builtin
+## exit
+assert 'exit'
+assert 'exit 42'
+assert 'exit ""'
+assert 'exit hello'
+assert 'exit 42Tokyo'
+assert 'exit 1 2'
+
 cleanup
