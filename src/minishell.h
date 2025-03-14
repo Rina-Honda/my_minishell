@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 21:33:47 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/14 22:08:05 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ int		exec_builtin(t_command *node);
 int		builtin_exit(char **argv);
 int		builtin_export(char **argv);
 int		builtin_unset(char **argv);
+int		builtin_env(char **argv);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える

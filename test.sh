@@ -245,4 +245,9 @@ assert 'unset hoge nosuch fuga'
 assert 'unset fuga \n export | echo $fuga'
 assert 'unset [invalid] fuga \n echo $fuga'
 
+## env
+print_desc "Output of 'env' differs, but it's ok."
+assert 'env'
+assert 'env | grep hoge | sort'
+
 cleanup
