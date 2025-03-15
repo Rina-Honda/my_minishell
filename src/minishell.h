@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 17:12:52 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 17:57:00 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ int		builtin_export(char **argv);
 int		builtin_unset(char **argv);
 int		builtin_env(char **argv);
 int		builtin_cd(char **argv);
+int		builtin_echo(char **argv);
 
 // error
 // __attribute__((noreturn))はコンパイラにreturnしないことを伝える
