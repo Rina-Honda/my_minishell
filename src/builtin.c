@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 17:58:22 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 18:15:26 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	is_builtin(t_command *node)
 {
 	const char		*cmd_name;
-	char			*builtin_commands[] = {"exit", "export", "unset", "env", "cd", "echo"};
+	char			*builtin_commands[] = {"exit", "export", "unset", "env", "cd", "echo", "pwd"};
 	unsigned int	i;
 
 	if (!node)
@@ -58,6 +58,8 @@ int	exec_builtin(t_command *node)
 		status = builtin_cd(argv);
 	else if (strcmp(argv[0], "echo") == 0)
 		status = builtin_echo(argv);
+	else if (strcmp(argv[0], "pwd") == 0)
+		status = builtin_pwd(argv);
 	else
 		todo("exec_builtin");
 	free_argv(argv);

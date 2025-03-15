@@ -282,4 +282,14 @@ assert 'echo -n hello'
 assert 'echo -n hello world'
 assert 'echo hello -n'
 
+## pwd
+assert 'pwd'
+assert 'cd\npwd'
+assert 'cd src\npwd'
+assert 'cd /etc\npwd'
+assert 'cd . \n pwd \n echo $PWD $OLDPWD'
+assert 'cd /// \n pwd \n echo $PWD $OLDPWD'
+assert 'cd /tmp/// \n pwd \n echo $PWD $OLDPWD'
+assert 'unset PWD\npwd\ncd /etc\npwd'
+
 cleanup
