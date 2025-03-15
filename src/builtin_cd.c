@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 22:23:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 17:36:17 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 20:08:18 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,18 @@ char	*resolve_pwd(char *old_pwd, char *path)
 	return (dup);
 }
 
+size_t	count_words(char **argv)
+{
+	size_t	count;
+
+	count = 0;
+	if (!argv || !argv[count])
+		return (0);
+	while (argv[count])
+		count++;
+	return (count);
+}
+
 int	builtin_cd(char **argv)
 {
 	char	*home;
@@ -113,6 +125,11 @@ int	builtin_cd(char **argv)
 	char	path[PATH_MAX];
 	char	*new_pwd;
 
+	if (count_words(argv) > 2)
+	{
+		builtin_error("cd", NULL, "too many arguments");
+		return (1);
+	}
 	old_pwd = map_get(envmap, "PWD");
 	map_set(envmap, "OLDPWD", old_pwd);
 	// 引数なしは$HOMEへ移動
@@ -130,7 +147,10 @@ int	builtin_cd(char **argv)
 		ft_strlcpy(path, argv[1], PATH_MAX); //? checkいらん？
 	if (chdir(path) < 0)
 	{
-		builtin_error("cd", NULL, "chdir");
+		if (errno == ENOENT)
+			builtin_error("cd", argv[1], "No such file or directory");
+		else
+			builtin_error("cd", NULL, "chdir");
 		return (1);
 	}
 	new_pwd = resolve_pwd(old_pwd, path);

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/12 23:40:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 19:28:39 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	setup_signal(void)
 
 	// readline中に制御文字を非表示
 	_rl_echo_control_chars = 0;
-	rl_outstream = stderr;
+	// rl_outstream = stderr;
 	if (isatty(STDIN_FILENO))
 		// readline中にシグナル処理
 		rl_event_hook = check_state;

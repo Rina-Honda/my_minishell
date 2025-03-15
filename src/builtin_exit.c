@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 12:13:34 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 20:31:26 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	is_numeric(char *s)
 {
-	if (!s || !(*s) || !ft_isdigit(*s))
+	if (!s || *s == '\0' || !ft_isdigit(*s))
 		return (false);
 	while (*s)
 	{
@@ -36,7 +36,7 @@ int	builtin_exit(char **argv)
 		exit(last_status);
 	if (argv[2])
 	{
-		xperror("exit: too many arguments");
+		builtin_error("exit", NULL,"too many arguments");
 		return (1);
 	}
 	arg = argv[1];
@@ -48,5 +48,5 @@ int	builtin_exit(char **argv)
 			exit((int)result);
 	}
 	xperror("exit: numeric argment required");
-	exit(2); //? code環境によって違う？
+	exit(255); //? code環境によって違う？
 }

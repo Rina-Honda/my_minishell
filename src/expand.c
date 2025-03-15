@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/13 23:21:54 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 19:32:42 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	expand_variable_str(char **dst, char **rest, char *ptr)
 
 bool	is_special_parameter(char *s)
 {
-	return (s[0] == '$' || s[1] == '?');
+	return (s[0] == '$' && s[1] == '?');
 }
 
 void	append_num(char **dst, unsigned int num)
