@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 21:32:30 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 13:48:05 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	wait_pipeline(pid_t last_pid)
 	int		status;
 	int		wstatus;
 
+	setup_sigint_newline();
 	while (1)
 	{
 		wait_result = wait(&wstatus);
@@ -136,6 +137,7 @@ int	wait_pipeline(pid_t last_pid)
 				fatal_error("wait");
 		}
 	}
+	setup_sigint_with_signum();
 	return (status);
 }
 

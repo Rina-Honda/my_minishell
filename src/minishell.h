@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 18:39:52 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 13:48:19 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ void	prepare_pipe_parent(t_command *node);
 
 // signal
 void	setup_signal(void);
+void	setup_sigint_with_signum(void);
+void	setup_sigint_newline(void);
 void	reset_signal(void);
 
 // env

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 19:28:39 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 13:19:33 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(void)
 {
 	char	*line;
 
-	// rl_outstream = stderr;
+	rl_outstream = stderr;
 	init_env();
 	setup_signal();
 	last_status = 0;

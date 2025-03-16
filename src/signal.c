@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 19:28:39 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 13:47:48 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,13 @@ void	handler(int signum)
 	sig = signum;
 }
 
-void	setup_sigint(void)
+void	handler_newline(int signum)
+{
+	(void)signum;
+	write(STDOUT_FILENO, "\n", 1);
+}
+
+void	setup_sigint_with_signum(void)
 {
 	struct sigaction	sa;
 
@@ -58,18 +64,29 @@ void	setup_sigint(void)
 		fatal_error("sigaction");
 }
 
+void	setup_sigint_newline(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = handler_newline;
+	if (sigaction(SIGINT, &sa, NULL) < 0)
+		fatal_error("sigaction");
+}
+
 void	setup_signal(void)
 {
 	extern int	_rl_echo_control_chars;
 
 	// readline中に制御文字を非表示
 	_rl_echo_control_chars = 0;
-	// rl_outstream = stderr;
+	rl_outstream = stderr;
 	if (isatty(STDIN_FILENO))
 		// readline中にシグナル処理
 		rl_event_hook = check_state;
 	ignore_sig(SIGQUIT);
-	setup_sigint();
+	setup_sigint_with_signum();
 }
 
 void	reset_sig(int signum)
