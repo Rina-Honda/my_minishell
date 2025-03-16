@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 21:04:00 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/15 21:32:30 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int	exec(t_command *node)
 	pid_t	last_pid;
 	int		status;
 
+	//? openできなかった時どうする？
 	if (open_redirect_file(node) < 0)
 		return (ERROR_OPEN_REDIR);
 	if (!node->next && is_builtin(node))

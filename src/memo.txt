@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/09 00:54:47 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/14 21:49:51 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/15 21:32:01 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,3 +28,5 @@ dprintf
 // 環境によって違いそうなので要確認
 exit の引数が数字じゃない時のerror code
 unset の引数が変数名の規則に則ってないときのexit code
+unset identifierルールの影響で$PATHできない
+minishell: unset: `/home/rhonda/.local/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program: not a valid identifier
