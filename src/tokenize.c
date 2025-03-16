@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 17:21:03 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 00:06:20 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ bool	consume_blank(char **rest, char *line)
 
 t_token	*operator(char **rest, char *line)
 {
-	// 長いのからみると、"<<"と"<"とかを識別できる
 	static char *const	operators[] = {">>", "<<", "||", "&&", ";;", ">", "<", "&", ";", "(", ")", "|", "\n"};
 	size_t	i = 0;
 	char	*operator;
@@ -51,7 +50,6 @@ t_token	*operator(char **rest, char *line)
 			operator = ft_strdup(operators[i]);
 			if (!operator)
 				fatal_error("ft_strdup");
-			//lineを読んだ分進める
 			*rest = line + ft_strlen(operator);
 			return (new_token(operator, TK_OP));
 		}
@@ -74,7 +72,6 @@ t_token	*word(char **rest, char *line)
 	{
 		if (*line == SINGLE_QUOTE)
 		{
-			//skip quote
 			line++;
 			while (*line && *line != SINGLE_QUOTE)
 				line++;
@@ -83,12 +80,10 @@ t_token	*word(char **rest, char *line)
 				tokenize_error("Unclosed single quote", &line, line);
 				break ;
 			}
-			//skip quote
 			line++;
 		}
 		else if (*line == DOUBLE_QUOTE)
 		{
-			//skip quote
 			line++;
 			while (*line && *line != DOUBLE_QUOTE)
 				line++;
@@ -97,10 +92,8 @@ t_token	*word(char **rest, char *line)
 				tokenize_error("Unclosed double quote", &line, line);
 				break ;
 			}
-			//skip quote
 			line++;
 		}
-		// quote以外の通常文字
 		else
 			line++;
 	}
@@ -148,7 +141,6 @@ char	**tail_recursive(t_token *token, int count, char **argv)
 	argv[count] = ft_strdup(token->word);
 	if (argv[count] == NULL)
 		fatal_error("ft_strdup");
-	//NULL終端つくる
 	argv[count + 1] = NULL;
 	return (tail_recursive(token->next, count + 1, argv));
 }

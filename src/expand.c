@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 19:32:42 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:53:45 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,15 @@ void	remove_single_quote(char **dst, char **rest, char *ptr)
 {
 	if (*ptr == SINGLE_QUOTE)
 	{
-		// skipe quote
 		ptr++;
 		while (*ptr != SINGLE_QUOTE)
 		{
-			//parse時にはじいた事象なのでassert_error
 			if (*ptr == '\0')
 				assert_error("Unclosed single quote");
 			append_char(dst, *ptr);
 			ptr++;
 		}
-		// skipe quote
 		ptr++;
-		//ポインタ更新
 		*rest = ptr;
 	}
 	else
@@ -59,19 +55,15 @@ void	remove_double_quote(char **dst, char **rest, char *ptr)
 {
 	if (*ptr == DOUBLE_QUOTE)
 	{
-		//skip quote
 		ptr++;
 		while (*ptr != DOUBLE_QUOTE)
 		{
-			//parse時にはじいた事象なのでassert_error
 			if (*ptr == '\0')
 				assert_error("Unclosed double quote");
 			append_char(dst, *ptr);
 			ptr++;
 		}
-		//skip quote
 		ptr++;
-		//ポインタ更新
 		*rest = ptr;
 	}
 	else
@@ -83,7 +75,6 @@ void	remove_quote_recursive(t_token *token)
 	char	*new_word;
 	char	*ptr;
 
-	//!? なんでTK_WORDじゃないとだめ？→remoove quoteする必要ないから
 	if (token == NULL || token->kind != TK_WORD || token->word == NULL)
 		return ;
 	ptr = token->word;
@@ -111,11 +102,9 @@ void	expand_quote_removal_recursive(t_command *node)
 {
 	if (!node)
 		return ;
-	// tokenはquote処理を行う
 	remove_quote_recursive(node->args);
 	remove_quote_recursive(node->filename);
 	remove_quote_recursive(node->delimiter);
-	// nodeは再帰
 	expand_quote_removal_recursive(node->redirects);
 	expand_quote_removal_recursive(node->command);
 	expand_quote_removal_recursive(node->next);
@@ -189,7 +178,6 @@ void	append_single_quote(char **dst, char **rest, char *ptr)
 {
 	if (*ptr == SINGLE_QUOTE)
 	{
-		// まだskip quoteしない
 		append_char(dst, *ptr);
 		ptr++;
 		while (*ptr != SINGLE_QUOTE)
@@ -199,7 +187,6 @@ void	append_single_quote(char **dst, char **rest, char *ptr)
 			append_char(dst, *ptr);
 			ptr++;
 		}
-		// まだskip quoteしない
 		append_char(dst, *ptr);
 		ptr++;
 		*rest = ptr;
@@ -212,7 +199,6 @@ void	append_double_quote(char **dst, char **rest, char *ptr)
 {
 	if (*ptr == DOUBLE_QUOTE)
 	{
-		// まだskip quoteしない
 		append_char(dst, *ptr);
 		ptr++;
 		while (*ptr != DOUBLE_QUOTE)
@@ -229,7 +215,6 @@ void	append_double_quote(char **dst, char **rest, char *ptr)
 				ptr++;
 			}
 		}
-		// まだskip quoteしない
 		append_char(dst, *ptr);
 		ptr++;
 		*rest = ptr;
@@ -257,7 +242,7 @@ void	expand_variable_token_recursive(t_token *token)
 			append_double_quote(&new_word, &ptr, ptr);
 		else if (is_variable(ptr))
 			expand_variable_str(&new_word, &ptr, ptr);
-		else if (is_special_parameter(ptr)) // $? は is_variableに引っかからない
+		else if (is_special_parameter(ptr))
 			expand_special_parameter_str(&new_word, &ptr, ptr);
 		else
 		{

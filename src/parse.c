@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 20:40:35 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:57:17 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,14 @@ bool	equal_operator(t_token *token, char *operator)
 	return (ft_strcmp(token->word, operator) == 0);
 }
 
-void	append_command_recursive(t_command **redirect, t_command *element)
+void	append_redirect_recursive(t_command **redirect, t_command *element)
 {
 	if (!(*redirect))
 	{
 		*redirect = element;
 		return ;
 	}
-	// すでにredirectが入っていたら、末尾に追記
-	append_command_recursive(&(*redirect)->next, element);
+	append_redirect_recursive(&(*redirect)->next, element);
 }
 
 t_command	*redirect_out(t_token **rest, t_token *token)
@@ -113,16 +112,15 @@ void	append_command_element(t_command *command, t_token **rest, t_token *token)
 		token = token->next;
 	}
 	else if (equal_operator(token, ">") && token->next->kind == TK_WORD)
-		append_command_recursive(&command->redirects, redirect_out(&token, token));
+		append_redirect_recursive(&command->redirects, redirect_out(&token, token));
 	else if (equal_operator(token, "<") && token->next->kind == TK_WORD)
-		append_command_recursive(&command->redirects, redirect_in(&token, token));
+		append_redirect_recursive(&command->redirects, redirect_in(&token, token));
 	else if (equal_operator(token, ">>") && token->next->kind == TK_WORD)
-		append_command_recursive(&command->redirects, redirect_append(&token, token));
+		append_redirect_recursive(&command->redirects, redirect_append(&token, token));
 	else if (equal_operator(token, "<<") && token->next->kind == TK_WORD)
-		append_command_recursive(&command->redirects, redirect_heredoc(&token, token));
+		append_redirect_recursive(&command->redirects, redirect_heredoc(&token, token));
 	else
 		todo("append_command_element");
-	// 読んだ分更新
 	*rest = token;
 }
 
@@ -147,7 +145,6 @@ t_command	*simple_command(t_token **rest, t_token *token)
 
 	command = new_command(SIMPLE_CMD);
 	append_command_element(command, &token, token);
-	// 次のオペレーターが来るまで、そのコマンドのnodeに詰める
 	while (token && !at_eof(token) && !is_control_operator(token))
 		append_command_element(command, &token, token);
 	*rest = token;
@@ -164,7 +161,6 @@ t_command	*pipeline(t_token **rest, t_token *token)
 	node->outpipe[0] = -1;
 	node->outpipe[1] = STDOUT_FILENO;
 	node->command = simple_command(&token, token);
-	// まだpipeが続いてたら
 	if (equal_operator(token, "|"))
 		node->next = pipeline(&token, token->next);
 	*rest = token;

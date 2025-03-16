@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 15:18:49 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 00:07:16 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,11 @@ DEFINITIONS
 
 bool	is_blank(char c)
 {
-	//? 改行もブランク扱い？
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
 bool	is_metachar(char c)
 {
-	//? blankもメタ文字？→そう
 	if (is_blank(c))
 		return (true);
 	return (c && ft_strchr("|&;()<> \t\n", c));

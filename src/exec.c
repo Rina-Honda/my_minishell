@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 23:00:39 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:52:04 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,13 @@ char	*search_path(const char *filename)
 	char	path[PATH_MAX];
 	char	*value;
 	char	*end;
+	char	*dup;
 
 	value = ft_getenv("PATH");
-	// printf("value: %s\n", value);
 	while (*value)
 	{
 		ft_bzero(path, PATH_MAX);
-		//区切り文字を探す
 		end = ft_strchr(value, ':');
-		//ヌル終端保証
 		if (end && end - value + 1 < PATH_MAX)
 			ft_strlcpy(path, value, end - value + 1);
 		else
@@ -36,17 +34,14 @@ char	*search_path(const char *filename)
 			ft_strlcat(path, filename, PATH_MAX);
 			if (access(path, X_OK) == 0)
 			{
-				char	*dup;
 				dup = ft_strdup(path);
 				if (dup == NULL)
 					fatal_error("ft_strdup");
 				return (dup);
 			}
 		}
-		//実行できるやつが見つからず最後のエントリまで見切った時
 		if (end == NULL)
 			return (NULL);
-		//次のエントリに更新
 		value = end + 1;
 	}
 	return (NULL);
@@ -79,11 +74,9 @@ int	exec_nonbuiltin(t_command *node)
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
 	path = argv[0];
-	// full pathじゃなかったら、$PATHでfull pathにする
 	if (strchr(path, '/') == NULL)
 		path = search_path(path);
 	validate_access(path, argv[0]);
-	// execve: pathnameをもとにファイル実行
 	execve(path, argv, get_environ(envmap));
 	free(argv);
 	reset_redirect(node->command->redirects);
@@ -98,13 +91,10 @@ pid_t	exec_pipeline(t_command *node)
 		return (-1);
 	prepare_pipe(node);
 	pid = fork();
-	// fork error
 	if (pid < 0)
 		fatal_error("fork");
-	// child process
 	else if (pid == 0)
 	{
-		// child processではCtrl + CとCtrl + \ をデフォルトに戻す
 		reset_signal();
 		if (open_redirect_file(node) < 0)
 			exit(EXIT_FAILURE); //todo
@@ -114,11 +104,9 @@ pid_t	exec_pipeline(t_command *node)
 		else
 			exec_nonbuiltin(node);
 	}
-	// parent process
 	prepare_pipe_parent(node);
 	if (node->next)
 		return (exec_pipeline(node->next));
-	// last_pidを返す
 	return (pid);
 }
 
@@ -141,7 +129,6 @@ int	wait_pipeline(pid_t last_pid)
 		}
 		else if (wait_result < 0)
 		{
-			// child processがいなくなったら
 			if (errno == ECHILD)
 				break ;
 			else if (errno == EINTR)

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 18:52:41 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:55:16 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,8 @@ int	map_set(t_map *map, const char *name, const char *value)
 			break ;
 		current = current->next;
 	}
-	// found name
 	if (current)
 	{
-		// valueを上書き
 		free(current->value);
 		if (!value)
 			current->value = NULL;
@@ -76,10 +74,8 @@ int	map_set(t_map *map, const char *name, const char *value)
 				fatal_error("ft_strdup");
 		}
 	}
-	// 404 not found
 	else
 	{
-		// item 新規作成
 		if (!value)
 		{
 			current = item_new(ft_strdup(name), NULL);
@@ -92,7 +88,6 @@ int	map_set(t_map *map, const char *name, const char *value)
 			if (!current->name || !current->value)
 				fatal_error("ft_strdup");
 		}
-		// mapの先頭に新規itemを追加
 		current->next = map->item_head.next;
 		map->item_head.next = current;
 	}
@@ -107,7 +102,6 @@ int	map_put(t_map *map, const char *str, bool allow_empty_value)
 	char	*value;
 
 	name_end = ft_strchr(str, '=');
-	// none value
 	if (!name_end)
 	{
 		if (!allow_empty_value)
@@ -117,7 +111,6 @@ int	map_put(t_map *map, const char *str, bool allow_empty_value)
 		if (!name)
 			fatal_error("ft_strdup");
 	}
-	// value exist
 	else
 	{
 		name = strndup(str, name_end - str);

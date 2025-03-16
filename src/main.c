@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 19:44:38 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:54:02 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	main(void)
 {
 	char	*line;
 
-	// rl_outstream = stderr;
 	init_env();
 	setup_signal();
 	last_status = 0;
@@ -52,7 +51,6 @@ int	main(void)
 		line = readline("minishell$ ");
 		if (line == NULL)
 			break ;
-		// lineが空の場合はadd_historyしない仕様
 		if (*line)
 			add_history(line);
 		interpret(line, &last_status);

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 20:27:22 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 00:05:22 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int	check_state()
 	{
 		sig = 0;
 		readline_interrupted = true;
-		// 入力を空にする
 		rl_replace_line("", 0);
-		// not 0で入力待ちを中断する
 		rl_done = 1;
 		return (0);
 	}
@@ -79,13 +77,9 @@ void	setup_signal(void)
 {
 	extern int	_rl_echo_control_chars;
 
-	// readline中に制御文字を非表示
 	_rl_echo_control_chars = 0;
 	if (isatty(STDIN_FILENO))
-		// readline中にシグナル処理
 		rl_event_hook = check_state;
-	// else
-	// 	rl_outstream = stderr;
 	ignore_sig(SIGQUIT);
 	setup_sigint_with_signum();
 }
