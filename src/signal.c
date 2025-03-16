@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 13:47:48 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 20:27:22 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ignore_sig(int signum)
 		fatal_error("sigaction");
 }
 
-void	handler(int signum)
+void	handler_signum(int signum)
 {
 	sig = signum;
 }
@@ -59,7 +59,7 @@ void	setup_sigint_with_signum(void)
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	sa.sa_handler = handler;
+	sa.sa_handler = handler_signum;
 	if (sigaction(SIGINT, &sa, NULL) < 0)
 		fatal_error("sigaction");
 }
@@ -81,10 +81,11 @@ void	setup_signal(void)
 
 	// readline中に制御文字を非表示
 	_rl_echo_control_chars = 0;
-	rl_outstream = stderr;
 	if (isatty(STDIN_FILENO))
 		// readline中にシグナル処理
 		rl_event_hook = check_state;
+	// else
+	// 	rl_outstream = stderr;
 	ignore_sig(SIGQUIT);
 	setup_sigint_with_signum();
 }

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 18:15:26 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 21:48:39 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	is_builtin(t_command *node)
 	i = 0;
 	while (i < sizeof(builtin_commands) / sizeof(*builtin_commands))
 	{
-		if (strcmp(cmd_name, builtin_commands[i]) == 0)
+		if (ft_strcmp(cmd_name, builtin_commands[i]) == 0)
 			return (true);
 		i++;
 	}
@@ -46,19 +46,19 @@ int	exec_builtin(t_command *node)
 
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
-	if (strcmp(argv[0], "exit") == 0)
+	if (ft_strcmp(argv[0], "exit") == 0)
 		status = builtin_exit(argv);
-	else if (strcmp(argv[0], "export") == 0)
+	else if (ft_strcmp(argv[0], "export") == 0)
 		status = builtin_export(argv);
-	else if (strcmp(argv[0], "unset") == 0)
+	else if (ft_strcmp(argv[0], "unset") == 0)
 		status = builtin_unset(argv);
-	else if (strcmp(argv[0], "env") == 0)
+	else if (ft_strcmp(argv[0], "env") == 0)
 		status = builtin_env(argv);
-	else if (strcmp(argv[0], "cd") == 0)
+	else if (ft_strcmp(argv[0], "cd") == 0)
 		status = builtin_cd(argv);
-	else if (strcmp(argv[0], "echo") == 0)
+	else if (ft_strcmp(argv[0], "echo") == 0)
 		status = builtin_echo(argv);
-	else if (strcmp(argv[0], "pwd") == 0)
+	else if (ft_strcmp(argv[0], "pwd") == 0)
 		status = builtin_pwd(argv);
 	else
 		todo("exec_builtin");

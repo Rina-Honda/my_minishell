@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 20:31:26 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 22:30:37 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 bool	is_numeric(char *s)
 {
-	if (!s || *s == '\0' || !ft_isdigit(*s))
+	if (!s || *s == '\0')
+		return (false);
+	if (*s == '+' || *s == '-')
+		s++;
+	if (!ft_isdigit(*s))
 		return (false);
 	while (*s)
 	{
@@ -43,10 +47,10 @@ int	builtin_exit(char **argv)
 	if (is_numeric(arg))
 	{
 		errno = 0;
-		result = strtol(arg, &end_ptr, 10);
+		result = ft_strtol(arg, &end_ptr, 10);
 		if (errno == 0 && *end_ptr == '\0')
-			exit((int)result);
+			exit((unsigned char)result);
 	}
-	xperror("exit: numeric argment required");
-	exit(255); //? code環境によって違う？
+	builtin_error("exit", NULL,"numeric argument required");
+	exit(2); //? not number
 }

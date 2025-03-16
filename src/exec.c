@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 13:48:05 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:00:39 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,21 @@ char	*search_path(const char *filename)
 
 void	validate_access(const char *path, const char *filename)
 {
+	struct stat	st;
+
 	if (path == NULL)
 		err_exit(filename, "command not found", 127);
 	if (access(path, F_OK) < 0)
 		err_exit(filename, "command not found", 127);
+	if (stat(path, &st) == -1)
+	{
+		perror("stat error");
+		exit(EXIT_FAILURE);
+	}
+	if (S_ISDIR(st.st_mode))
+		err_exit(filename, "Is a directory", 126);
+	if (access(path, X_OK) < 0)
+		err_exit(filename, "Permission denied", 126);
 }
 
 int	exec_nonbuiltin(t_command *node)
@@ -95,6 +106,8 @@ pid_t	exec_pipeline(t_command *node)
 	{
 		// child processではCtrl + CとCtrl + \ をデフォルトに戻す
 		reset_signal();
+		if (open_redirect_file(node) < 0)
+			exit(EXIT_FAILURE); //todo
 		prepare_pipe_child(node);
 		if (is_builtin(node))
 			exit(exec_builtin(node));
@@ -146,11 +159,12 @@ int	exec(t_command *node)
 	pid_t	last_pid;
 	int		status;
 
-	//? openできなかった時どうする？
-	if (open_redirect_file(node) < 0)
-		return (ERROR_OPEN_REDIR);
 	if (!node->next && is_builtin(node))
+	{
+		if (open_redirect_file(node) < 0)
+			exit(EXIT_FAILURE); //todo
 		status = exec_builtin(node);
+	}
 	else
 	{
 		last_pid = exec_pipeline(node);

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 00:28:52 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/12 07:55:04 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:52:52 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	read_heredoc(const char *delimiter)
 			free(line);
 			break ;
 		}
-		if (strcmp(line, delimiter) == 0)
+		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;

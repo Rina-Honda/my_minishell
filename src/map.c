@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 21:32:32 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:52:41 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	map_set(t_map *map, const char *name, const char *value)
 	current = map->item_head.next;
 	while (current)
 	{
-		if (strcmp(current->name, name) == 0)
+		if (ft_strcmp(current->name, name) == 0)
 			break ;
 		current = current->next;
 	}
@@ -140,7 +140,7 @@ char	*map_get(t_map *map, const char *name)
 	current = map->item_head.next;
 	while (current)
 	{
-		if (strcmp(current->name, name) == 0)
+		if (ft_strcmp(current->name, name) == 0)
 			return (current->value);
 		current = current->next;
 	}
@@ -194,7 +194,7 @@ int	map_unset(t_map *map, const char *name)
 	current = map->item_head.next;
 	while (current)
 	{
-		if (strcmp(current->name, name) == 0)
+		if (ft_strcmp(current->name, name) == 0)
 		{
 			// freeの前に前後をつなげとく
 			prev->next = current->next;

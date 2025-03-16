@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 17:57:17 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 20:40:35 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ bool	equal_operator(t_token *token, char *operator)
 {
 	if (token->kind != TK_OP)
 		return (false);
-	return (strcmp(token->word, operator) == 0);
+	return (ft_strcmp(token->word, operator) == 0);
 }
 
-void	append_command_recursive(t_command **command, t_command *element)
+void	append_command_recursive(t_command **redirect, t_command *element)
 {
-	if (!(*command))
+	if (!(*redirect))
 	{
-		*command = element;
+		*redirect = element;
 		return ;
 	}
 	// すでにredirectが入っていたら、末尾に追記
-	append_command_recursive(&(*command)->next, element);
+	append_command_recursive(&(*redirect)->next, element);
 }
 
 t_command	*redirect_out(t_token **rest, t_token *token)

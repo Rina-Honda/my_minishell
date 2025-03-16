@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/15 18:17:53 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/16 18:51:14 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ SRCS = src/main.c \
 	src/builtin_echo.c \
 	src/builtin_pwd.c \
 	src/util.c \
+	src/util_strtol.c \
+	src/util_strcmp.c \
 	src/error.c \
 	src/free.c \
 

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 13:48:19 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 19:55:20 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,5 +183,8 @@ bool	at_eof(t_token *token);
 bool	starts_with(const char *s, const char *keyword);
 bool	is_alpha_underscore(char c);
 bool	is_alpha_num_underscore(char c);
+int		ft_isspace(char c);
+long	ft_strtol(const char *str, char **endptr, int base);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

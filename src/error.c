@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:59 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/14 20:29:44 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/16 22:48:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	fatal_error(const char *msg)
 void	err_exit(const char *location, const char *msg, int status)
 {
 	perror_prefix();
-	dprintf(STDERR_FILENO, "minishell: %s: %s\n", location, msg);
+	dprintf(STDERR_FILENO, "%s: %s\n", location, msg);
 	exit(status);
 }
 
