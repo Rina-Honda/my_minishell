@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 00:05:13 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:05:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:42:16 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 t_token	*operator(char **rest, char *line)
 {
-	static char *const	operators[] = {">>", "<<", "||", "&&", ";;", ">", "<", "&", ";", "(", ")", "|", "\n"};
-	size_t	i = 0;
-	char	*operator;
+	static char *const	operators[] = {">>", "<<", "||", "&&",
+		";;", ">", "<", "&", ";", "(", ")", "|", "\n"};
+	size_t				i;
+	char				*operator;
 
+	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{
 		if (starts_with(line, operators[i]))

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:49:03 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:41:16 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 volatile sig_atomic_t	sig = 0;
 
-int	check_state()
+int	check_state(void)
 {
 	if (sig == 0)
 		return (0);

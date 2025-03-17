@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:54:48 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:55:27 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:35:42 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*item_get_string(t_item *item)
 	size_t	str_size;
 	char	*str;
 
-	str_size = ft_strlen(item->name) + 2; // イコールと\0の分
+	str_size = ft_strlen(item->name) + 2;
 	if (item->value)
 		str_size += ft_strlen(item->value);
 	str = malloc(sizeof(char) * str_size);

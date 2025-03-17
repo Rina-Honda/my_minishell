@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 00:06:45 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:08:26 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:44:43 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	preprocess_strtol(const char **str, int *base, bool *is_negative)
 		*is_negative = true;
 	if (**str == '-' || **str == '+')
 		(*str)++;
-	if ((base == 0 || *base == 16) && (ft_strncmp(*str, "0x", 2) == 0 || ft_strncmp(*str, "0x", 2) == 0))
+	if ((base == 0 || *base == 16) && (ft_strncmp(*str, "0x", 2) == 0
+			|| ft_strncmp(*str, "0x", 2) == 0))
 	{
 		*str += 2;
 		*base = 16;
@@ -32,7 +33,8 @@ static void	preprocess_strtol(const char **str, int *base, bool *is_negative)
 		*base = 10;
 }
 
-static bool	is_cut(unsigned long current, unsigned long next, unsigned long base, bool is_negative)
+static bool	is_cut(unsigned long current, unsigned long next,
+	unsigned long base, bool is_negative)
 {
 	unsigned long	cutoff;
 	unsigned long	cutlim;
@@ -45,7 +47,8 @@ static bool	is_cut(unsigned long current, unsigned long next, unsigned long base
 		return (false);
 }
 
-static bool	internal_strtol(const char **str, int base, unsigned long *ul_val, bool *is_negative)
+static bool	internal_strtol(const char **str, int base,
+	unsigned long *ul_val, bool *is_negative)
 {
 	bool	overflow;
 
@@ -57,7 +60,8 @@ static bool	internal_strtol(const char **str, int base, unsigned long *ul_val, b
 		if (is_cut(*ul_val, (unsigned long)**str - '0', base, *is_negative))
 			overflow = true;
 		if (!overflow)
-			*ul_val = (*ul_val) * (unsigned long)base + (unsigned long)(**str - '0');
+			*ul_val = (*ul_val) * (unsigned long)base
+				+ (unsigned long)(**str - '0');
 		(*str)++;
 	}
 	return (overflow);

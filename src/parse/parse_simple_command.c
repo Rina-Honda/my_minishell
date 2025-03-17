@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:41:05 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:39:30 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	append_command_element(t_command *command, t_token **rest, t_token *token)
 
 bool	is_control_operator(t_token *token)
 {
-	static char *const	operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
+	static char *const	operators[] = {"||", "&", "&&",
+		";", ";;", "(", ")", "|", "\n"};
 	size_t				i;
 
 	i = 0;

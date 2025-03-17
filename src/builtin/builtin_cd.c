@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 22:23:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:03:41 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:31:40 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ bool	consume_path(char **rest, char *path, char *elem)
 	}
 	return (false);
 }
+
 void	delete_last_elem(char *path)
 {
 	char	*start;
@@ -130,7 +131,6 @@ int	builtin_cd(char **argv)
 	}
 	old_pwd = map_get(envmap, "PWD");
 	map_set(envmap, "OLDPWD", old_pwd);
-	// 引数なしは$HOMEへ移動
 	if (!argv[1])
 	{
 		home = map_get(envmap, "HOME");
@@ -139,10 +139,10 @@ int	builtin_cd(char **argv)
 			builtin_error("cd", NULL, "$HOME not set");
 			return (1);
 		}
-		ft_strlcpy(path, home, PATH_MAX); //? checkいらん？
+		ft_strlcpy(path, home, PATH_MAX);
 	}
 	else
-		ft_strlcpy(path, argv[1], PATH_MAX); //? checkいらん？
+		ft_strlcpy(path, argv[1], PATH_MAX);
 	if (chdir(path) < 0)
 	{
 		if (errno == ENOENT)

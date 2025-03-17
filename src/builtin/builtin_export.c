@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 13:48:40 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:02:43 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:32:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	print_all_env(void)
 {
 	t_item	*current;
+
 	current = envmap->item_head.next;
 	while (current)
 	{

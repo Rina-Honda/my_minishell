@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 21:20:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:02:14 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:32:43 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	builtin_unset(char **argv)
 			builtin_error("unset", argv[i], "not a valid identifier");
 			status = 1;
 		}
-		else // last_statusを返すためにいちいち変えてる
+		else
 			status = 0;
 		i++;
 	}

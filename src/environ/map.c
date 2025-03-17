@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:57:15 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:36:18 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_map	*map_new(void)
 {
 	t_map	*map;
 
-	// mapのポインタではなく中身分確保
 	map = calloc(1, sizeof(*map));
 	if (!map)
 		fatal_error("calloc");
@@ -98,7 +97,6 @@ int	map_unset(t_map *map, const char *name)
 	{
 		if (ft_strcmp(current->name, name) == 0)
 		{
-			// freeの前に前後をつなげとく
 			prev->next = current->next;
 			free(current->name);
 			free(current->value);
