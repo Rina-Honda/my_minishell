@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/17 22:48:43 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/18 00:16:28 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,35 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = src/main.c \
 	src/tokenize/tokenize.c \
+	src/tokenize/argv.c \
+	src/tokenize/blank.c \
+	src/tokenize/metachar.c \
+	src/tokenize/name.c \
+	src/tokenize/operator.c \
+	src/tokenize/token.c \
+	src/tokenize/word.c \
 	src/parse/parse.c \
+	src/parse/node.c \
+	src/parse/parse_pipeline.c \
+	src/parse/parse_redirect.c \
+	src/parse/parse_simple_command.c \
 	src/expand/expand.c \
+	src/expand/expand_variable.c \
+	src/expand/expand_special.c \
+	src/expand/expand_quote_removal.c \
 	src/redirect/redirect.c \
+	src/redirect/open_redirect_file.c \
+	src/redirect/stashfd.c \
+	src/redirect/heredoc.c \
 	src/pipe/pipe.c \
 	src/exec/exec.c \
+	src/exec/search_path.c \
 	src/signal/signal.c \
+	src/signal/signal_handler.c \
 	src/environ/env.c \
 	src/environ/map.c \
+	src/environ/map_set.c \
+	src/environ/map_item.c \
 	src/builtin/builtin.c \
 	src/builtin/builtin_exit.c \
 	src/builtin/builtin_export.c \

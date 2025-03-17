@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:48:01 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 00:14:35 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,21 +107,53 @@ extern t_map					*envmap;
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *token);
 t_token	*new_token(char *word, t_token_kind kind);
+bool	is_blank(char c);
+bool	consume_blank(char **rest, char *line);
+bool	is_metachar(char c);
+bool	is_metachar_notblank(char c);
+bool	is_alpha_underscore(char c);
+bool	is_alpha_num_underscore(char c);
+bool	is_identifier(const char *s);
+t_token	*operator(char **rest, char *line);
+t_token	*new_token(char *word, t_token_kind kind);
+t_token	*tokendup(t_token *token);
+void	append_token_recursive(t_token **tokens, t_token *token);
+bool	at_eof(t_token *token);
+bool	equal_operator(t_token *token, char *operator);
+bool	is_word(const char *s);
+t_token	*word(char **rest, char *line);
 
 // parse
 t_command	*parse(t_token *token);
+t_command	*new_command(t_command_kind kind);
+t_command	*pipeline(t_token **rest, t_token *token);
+t_command	*redirect_out(t_token **rest, t_token *token);
+t_command	*redirect_in(t_token **rest, t_token *token);
+t_command	*redirect_append(t_token **rest, t_token *token);
+t_command	*redirect_heredoc(t_token **rest, t_token *token);
+t_command	*simple_command(t_token **rest, t_token *token);
 
 // expand
 void	expand(t_command *node);
+void	expand_quote_removal_recursive(t_command *node);
+void	append_char(char **s, char c);
+bool	is_variable(char *s);
+void	expand_variable_str(char **dst, char **rest, char *ptr);
+bool	is_special_parameter(char *s);
+void	expand_special_parameter_str(char **dst, char **rest, char *ptr);
 
 // exec
 int		exec(t_command *node);
 int		exec_nonbuiltin(t_command *node)__attribute__((noreturn));
+char	*search_path(const char *filename);
 
 // redirect
 int		open_redirect_file(t_command *redirect);
 void	do_redirect(t_command *redirect);
 void	reset_redirect(t_command *redirect);
+int		open_redirect_file(t_command *node);
+int		stashfd(int fd);
+int		read_heredoc(const char *delimiter);
 
 // pipe
 void	prepare_pipe(t_command *node);
@@ -131,8 +163,12 @@ void	prepare_pipe_parent(t_command *node);
 // signal
 void	setup_signal(void);
 void	setup_sigint_with_signum(void);
+void	handler_signum(int signum);
 void	setup_sigint_newline(void);
+void	handler_newline(int signum);
+void	ignore_sig(int signum);
 void	reset_signal(void);
+void	reset_sig(int signum);
 
 // env
 void	init_env(void);
@@ -145,6 +181,7 @@ int		map_put(t_map *map, const char *str, bool allow_empty_value);
 char	*map_get(t_map *map, const char *name);
 size_t	map_len(t_map *map, bool count_null_value);
 char	*item_get_string(t_item *item);
+t_item	*item_new(char *name, char *value);
 int		map_unset(t_map *map, const char *name);
 int		map_set(t_map *map, const char *name, const char *value);
 
@@ -176,13 +213,7 @@ void	free_token(t_token *token);
 void	free_node(t_command *node);
 
 // util
-bool	is_blank(char c);
-bool	is_metachar(char c);
-bool	is_metachar_notblank(char c);
-bool	at_eof(t_token *token);
 bool	starts_with(const char *s, const char *keyword);
-bool	is_alpha_underscore(char c);
-bool	is_alpha_num_underscore(char c);
 int		ft_isspace(char c);
 long	ft_strtol(const char *str, char **endptr, int base);
 int		ft_strcmp(const char *s1, const char *s2);

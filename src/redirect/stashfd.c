@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   stashfd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:10:11 by rhonda           ###   ########.fr       */
+/*   Created: 2025/03/17 23:41:50 by rhonda            #+#    #+#             */
+/*   Updated: 2025/03/17 23:42:15 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	starts_with(const char *s, const char *keyword)
+int	stashfd(int fd)
 {
-	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
-}
+	int	stashfd;
 
-int	ft_isspace(char c)
-{
-	return (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ');
+	stashfd = fcntl(fd, F_DUPFD, 10);
+	if (stashfd < 0)
+		fatal_error("fcntl");
+	if (close(fd) < 0)
+		fatal_error("close");
+	return (stashfd);
 }

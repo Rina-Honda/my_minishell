@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:10:11 by rhonda           ###   ########.fr       */
+/*   Created: 2025/03/17 23:24:51 by rhonda            #+#    #+#             */
+/*   Updated: 2025/03/18 00:08:47 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	starts_with(const char *s, const char *keyword)
+t_command	*new_command(t_command_kind kind)
 {
-	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
-}
+	t_command	*command;
 
-int	ft_isspace(char c)
-{
-	return (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ');
+	command = ft_calloc(1, sizeof(*command));
+	if (!command)
+		fatal_error("ft_calloc");
+	command->kind = kind;
+	return (command);
 }

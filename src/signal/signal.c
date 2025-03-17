@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:08:57 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 23:49:03 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,6 @@ int	check_state()
 		return (0);
 	}
 	return (0);
-}
-
-void	ignore_sig(int signum)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_IGN;
-	if (sigaction(signum, &sa, NULL) < 0)
-		fatal_error("sigaction");
-}
-
-void	handler_signum(int signum)
-{
-	sig = signum;
-}
-
-void	handler_newline(int signum)
-{
-	(void)signum;
-	write(STDOUT_FILENO, "\n", 1);
 }
 
 void	setup_sigint_with_signum(void)
@@ -82,17 +60,6 @@ void	setup_signal(void)
 		rl_event_hook = check_state;
 	ignore_sig(SIGQUIT);
 	setup_sigint_with_signum();
-}
-
-void	reset_sig(int signum)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_DFL;
-	if (sigaction(signum, &sa, NULL) < 0)
-		fatal_error("sigaction");
 }
 
 void	reset_signal(void)

@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   blank.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:10:11 by rhonda           ###   ########.fr       */
+/*   Created: 2025/03/17 23:58:33 by rhonda            #+#    #+#             */
+/*   Updated: 2025/03/17 23:59:24 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	starts_with(const char *s, const char *keyword)
+bool	is_blank(char c)
 {
-	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
+	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-int	ft_isspace(char c)
+bool	consume_blank(char **rest, char *line)
 {
-	return (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ');
+	if (is_blank(*line))
+	{
+		while (*line && is_blank(*line))
+			line++;
+		*rest = line;
+		return (true);
+	}
+	*rest = line;
+	return (false);
 }

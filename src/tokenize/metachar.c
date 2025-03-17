@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   metachar.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 21:53:20 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:10:11 by rhonda           ###   ########.fr       */
+/*   Created: 2025/03/18 00:01:38 by rhonda            #+#    #+#             */
+/*   Updated: 2025/03/18 00:02:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	starts_with(const char *s, const char *keyword)
+bool	is_metachar(char c)
 {
-	return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
+	if (is_blank(c))
+		return (true);
+	return (c && ft_strchr("|&;()<> \t\n", c));
 }
 
-int	ft_isspace(char c)
+bool	is_metachar_notblank(char c)
 {
-	return (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ');
+	return (c && ft_strchr("|&;()<>", c));
 }
