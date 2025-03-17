@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 19:55:20 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:48:01 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ int		builtin_echo(char **argv);
 int		builtin_pwd(char **argv);
 
 // error
-// __attribute__((noreturn))はコンパイラにreturnしないことを伝える
 void	fatal_error(const char *msg) __attribute__((noreturn));
 void	err_exit(const char *locatino, const char *msg, int status)__attribute__((noreturn));
 void	assert_error(const char *msg)__attribute__((noreturn));
@@ -169,6 +168,7 @@ void	tokenize_error(const char *location, char **rest, char *line);
 void	parse_error(const char *location, t_token **rest, t_token *token);
 void	xperror(const char *location);
 void	builtin_error(const char *func, const char *name, const char *err);
+void	perror_prefix(void);
 
 // free
 void	free_argv(char **argv);

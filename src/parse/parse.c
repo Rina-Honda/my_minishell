@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 23:57:17 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:09:34 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_command	*new_command(t_command_kind kind)
 {

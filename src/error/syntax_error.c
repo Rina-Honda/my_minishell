@@ -1,51 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/02 23:16:59 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 23:57:53 by rhonda           ###   ########.fr       */
+/*   Created: 2025/03/17 21:56:04 by rhonda            #+#    #+#             */
+/*   Updated: 2025/03/17 21:57:23 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 bool	syntax_error = false;
-
-void	perror_prefix(void)
-{
-	dprintf(STDERR_FILENO, "%s", "minishell: ");
-}
-
-void	fatal_error(const char *msg)
-{
-	perror_prefix();
-	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
-	exit(1);
-}
-
-void	err_exit(const char *location, const char *msg, int status)
-{
-	perror_prefix();
-	dprintf(STDERR_FILENO, "%s: %s\n", location, msg);
-	exit(status);
-}
-
-void	assert_error(const char *msg)
-{
-	perror_prefix();
-	dprintf(STDERR_FILENO, "Assert Error: %s\n", msg);
-	exit(255);
-}
-
-void	todo(const char *msg)
-{
-	perror_prefix();
-	dprintf(STDERR_FILENO, "TODO: %s\n", msg);
-	exit(255);
-}
 
 void	tokenize_error(const char *location, char **rest, char *line)
 {
@@ -65,19 +32,4 @@ void	parse_error(const char *location, t_token **rest, t_token *token)
 	while (token && !at_eof(token))
 		token = token->next;
 	*rest = token;
-}
-
-void	xperror(const char *location)
-{
-	perror_prefix();
-	perror(location);
-}
-
-void	builtin_error(const char *func, const char *name, const char *err)
-{
-	perror_prefix();
-	dprintf(STDERR_FILENO, "%s: ", func);
-	if (name)
-		dprintf(STDERR_FILENO, "`%s: ", name);
-	dprintf(STDERR_FILENO, "%s\n", err);
 }

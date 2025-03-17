@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 00:28:52 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 00:04:18 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:09:08 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 bool	readline_interrupted = false;
 

@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 21:48:39 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:02:06 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 bool	is_builtin(t_command *node)
 {

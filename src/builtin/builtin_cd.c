@@ -6,18 +6,17 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 22:23:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 20:08:18 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:03:41 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 bool	consume_path(char **rest, char *path, char *elem)
 {
 	size_t	elem_len;
 
 	elem_len = ft_strlen(elem);
-	// 配下のディレクトリの時
 	if (ft_strncmp(path, elem, elem_len) == 0)
 	{
 		if (path[elem_len] == '\0' || path[elem_len] == '/')
@@ -55,7 +54,6 @@ void	append_path_elem(char *dst, size_t dst_size, char **rest, char *src)
 	elem_len = 0;
 	while (src[elem_len] && src[elem_len] != '/')
 		elem_len++;
-	//? 初回か、末尾が/でないときに/を追加
 	if (dst_len == 0 || dst[dst_len - 1] != '/')
 	{
 		if (dst_len < dst_size - 1)

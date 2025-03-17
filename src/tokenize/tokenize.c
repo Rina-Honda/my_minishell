@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 00:06:20 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:08:43 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_token	*new_token(char *word, t_token_kind kind)
 {

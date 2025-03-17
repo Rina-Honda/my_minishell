@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 18:15:18 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/15 18:52:25 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:02:32 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 bool	is_equal_inode(const char *path1, const char *path2)
 {
@@ -33,7 +33,6 @@ int	builtin_pwd(char **argv)
 
 	(void)argv;
 	pwd = ft_getenv("PWD");
-	// なかったら情報とってくる
 	if (!pwd || !is_equal_inode(pwd, "."))
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)

@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 14:58:29 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 23:59:36 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:09:17 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void	copy_pipe(int dst[2], int src[2])
 {

@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 00:06:45 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 00:06:47 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:08:26 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void	preprocess_strtol(const char **str, int *base, bool *is_negative)
 {

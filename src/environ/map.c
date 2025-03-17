@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 23:55:16 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:19:08 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_map	*map_new(void)
 {

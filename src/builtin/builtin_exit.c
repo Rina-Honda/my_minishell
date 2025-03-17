@@ -6,11 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 22:30:37 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/17 22:02:48 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 bool	is_numeric(char *s)
 {
@@ -31,11 +31,10 @@ bool	is_numeric(char *s)
 
 int	builtin_exit(char **argv)
 {
-	long 	result;
+	long	result;
 	char	*arg;
 	char	*end_ptr;
 
-	// none argv
 	if (!argv[1])
 		exit(last_status);
 	if (argv[2])
@@ -52,5 +51,5 @@ int	builtin_exit(char **argv)
 			exit((unsigned char)result);
 	}
 	builtin_error("exit", NULL,"numeric argument required");
-	exit(2); //? not number
+	exit(2);
 }

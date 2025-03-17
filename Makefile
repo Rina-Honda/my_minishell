@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/16 18:51:14 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/17 22:48:43 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,27 +19,29 @@ LIBFT_DIR = ./libfts
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = src/main.c \
-	src/tokenize.c \
-	src/parse.c \
-	src/expand.c \
-	src/redirect.c \
-	src/pipe.c \
-	src/exec.c \
-	src/signal.c \
-	src/env.c \
-	src/map.c \
-	src/builtin.c \
-	src/builtin_exit.c \
-	src/builtin_export.c \
-	src/builtin_unset.c \
-	src/builtin_env.c \
-	src/builtin_cd.c \
-	src/builtin_echo.c \
-	src/builtin_pwd.c \
-	src/util.c \
-	src/util_strtol.c \
-	src/util_strcmp.c \
-	src/error.c \
+	src/tokenize/tokenize.c \
+	src/parse/parse.c \
+	src/expand/expand.c \
+	src/redirect/redirect.c \
+	src/pipe/pipe.c \
+	src/exec/exec.c \
+	src/signal/signal.c \
+	src/environ/env.c \
+	src/environ/map.c \
+	src/builtin/builtin.c \
+	src/builtin/builtin_exit.c \
+	src/builtin/builtin_export.c \
+	src/builtin/builtin_unset.c \
+	src/builtin/builtin_env.c \
+	src/builtin/builtin_cd.c \
+	src/builtin/builtin_echo.c \
+	src/builtin/builtin_pwd.c \
+	src/util/util.c \
+	src/util/util_strtol.c \
+	src/util/util_strcmp.c \
+	src/error/error.c \
+	src/error/syntax_error.c \
+	src/error/error_exit.c \
 	src/free.c \
 
 OBJS = $(SRCS:.c=.o) $(LIBFT)
