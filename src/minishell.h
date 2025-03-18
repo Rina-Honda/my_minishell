@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 10:38:05 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:10:38 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ t_command	*simple_command(t_token **rest, t_token *token);
 void	expand(t_command *node);
 void	expand_quote_removal_recursive(t_command *node);
 void	append_char(char **s, char c);
+void	expand_variable_recursive(t_command *node);
 bool	is_variable(char *s);
 void	expand_variable_str(char **dst, char **rest, char *ptr);
 bool	is_special_parameter(char *s);

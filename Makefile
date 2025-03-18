@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/18 10:38:22 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/18 11:11:47 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS = src/main.c \
 	src/parse/parse_redirect.c \
 	src/parse/parse_simple_command.c \
 	src/expand/expand.c \
+	src/expand/expand_token.c \
 	src/expand/expand_variable.c \
 	src/expand/expand_special.c \
 	src/expand/expand_quote_removal.c \

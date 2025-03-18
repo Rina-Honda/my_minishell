@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:12:42 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:12:59 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:05:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,15 @@ void	expand_variable_str(char **dst, char **rest, char *ptr)
 	ptr++;
 	if (!is_alpha_underscore(*ptr))
 		assert_error("Variable must starts with alpha or underscore.");
-	append_char(&name, *ptr);
-	ptr++;
+	append_char(&name, *ptr++);
 	while (is_alpha_num_underscore(*ptr))
-	{
-		append_char(&name, *ptr);
-		ptr++;
-	}
+		append_char(&name, *ptr++);
 	value = ft_getenv(name);
 	free(name);
 	if (value)
 	{
 		while (*value)
-		{
-			append_char(dst, *value);
-			value++;
-		}
+			append_char(dst, *value++);
 	}
 	*rest = ptr;
 }
