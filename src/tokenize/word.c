@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 00:13:14 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:35:19 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:43:06 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_token	*word(char **rest, char *line)
 		else
 			line++;
 	}
-	word = strndup(start, line - start);
+	word = ft_strndup(start, line - start);
 	if (word == NULL)
 		fatal_error("ft_strndup");
 	*rest = line;

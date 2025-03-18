@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:52:27 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 10:15:29 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:43:01 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	set_name_value(const char *str, char **name, char **value)
 	}
 	else
 	{
-		*name = strndup(str, name_end - str);
+		*name = ft_strndup(str, name_end - str);
 		*value = ft_strdup(name_end + 1);
 		if (!name || !value)
 			fatal_error("ft_strdup");

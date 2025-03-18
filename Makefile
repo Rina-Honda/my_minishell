@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/18 11:11:47 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/18 11:43:34 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRCS = src/main.c \
 	src/util/util.c \
 	src/util/util_strtol.c \
 	src/util/util_strcmp.c \
+	src/util/util_strndup.c \
 	src/error/error.c \
 	src/error/syntax_error.c \
 	src/error/error_exit.c \
