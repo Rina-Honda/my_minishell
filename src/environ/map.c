@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:36:18 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 09:03:00 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	map_put(t_map *map, const char *str, bool allow_empty_value)
 	return (result);
 }
 
-char	*map_get(t_map *map, const char *name)
+t_item	*map_get(t_map *map, const char *name)
 {
 	t_item	*current;
 
@@ -62,7 +62,7 @@ char	*map_get(t_map *map, const char *name)
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)
-			return (current->value);
+			return (current);
 		current = current->next;
 	}
 	return (NULL);

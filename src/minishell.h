@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:14:35 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 09:07:31 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ char	**get_environ(t_map *map);
 // map
 t_map	*map_new(void);
 int		map_put(t_map *map, const char *str, bool allow_empty_value);
-char	*map_get(t_map *map, const char *name);
+t_item	*map_get(t_map *map, const char *name);
 size_t	map_len(t_map *map, bool count_null_value);
 char	*item_get_string(t_item *item);
 t_item	*item_new(char *name, char *value);
@@ -193,6 +193,7 @@ int		builtin_export(char **argv);
 int		builtin_unset(char **argv);
 int		builtin_env(char **argv);
 int		builtin_cd(char **argv);
+char	*resolve_pwd(char *old_pwd, char *path);
 int		builtin_echo(char **argv);
 int		builtin_pwd(char **argv);
 

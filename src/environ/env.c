@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:17:03 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:18:51 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 08:53:50 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ void	init_env(void)
 
 char	*ft_getenv(const char *name)
 {
-	return (map_get(envmap, name));
+	t_item	*item;
+
+	item = map_get(envmap, name);
+	if (!item)
+		return (NULL);
+	return (item->value);
 }
 
 char	**get_environ(t_map *map)
