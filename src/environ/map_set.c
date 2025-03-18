@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:52:27 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 10:01:26 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 10:15:29 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	map_insert(t_map *map, const char *name, const char *value)
 	{
 		item = item_new(ft_strdup(name), NULL);
 		if (!item->name)
-			fatal_error("strdup");
+			fatal_error("ft_strdup");
 	}
 	else
 	{
@@ -57,4 +57,40 @@ int	map_set(t_map *map, const char *name, const char *value)
 	else
 		map_insert(map, name, value);
 	return (0);
+}
+
+static void	set_name_value(const char *str, char **name, char **value)
+{
+	char	*name_end;
+
+	name_end = ft_strchr(str, '=');
+	if (!name_end)
+	{
+		*name = ft_strdup(str);
+		*value = NULL;
+		if (!name)
+			fatal_error("ft_strdup");
+	}
+	else
+	{
+		*name = strndup(str, name_end - str);
+		*value = ft_strdup(name_end + 1);
+		if (!name || !value)
+			fatal_error("ft_strdup");
+	}
+}
+
+int	map_put(t_map *map, const char *str, bool allow_empty_value)
+{
+	int		result;
+	char	*name;
+	char	*value;
+
+	set_name_value(str, &name, &value);
+	if (!value && !allow_empty_value)
+		return (-1);
+	result = map_set(map, name, value);
+	free(name);
+	free(value);
+	return (result);
 }
