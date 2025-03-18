@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 09:07:31 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 10:38:05 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void	expand_special_parameter_str(char **dst, char **rest, char *ptr);
 int		exec(t_command *node);
 int		exec_nonbuiltin(t_command *node)__attribute__((noreturn));
 char	*search_path(const char *filename);
+int		wait_pipeline(pid_t last_pid);
 
 // redirect
 int		open_redirect_file(t_command *redirect);

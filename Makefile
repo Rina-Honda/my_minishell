@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/18 09:08:12 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/18 10:38:22 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRCS = src/main.c \
 	src/pipe/pipe.c \
 	src/exec/exec.c \
 	src/exec/search_path.c \
+	src/exec/wait.c \
 	src/signal/signal.c \
 	src/signal/signal_handler.c \
 	src/environ/env.c \

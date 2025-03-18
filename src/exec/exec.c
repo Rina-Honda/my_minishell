@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:00:34 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 10:36:38 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,37 +73,6 @@ pid_t	exec_pipeline(t_command *node)
 	if (node->next)
 		return (exec_pipeline(node->next));
 	return (pid);
-}
-
-int	wait_pipeline(pid_t last_pid)
-{
-	pid_t	wait_result;
-	int		status;
-	int		wstatus;
-
-	setup_sigint_newline();
-	while (1)
-	{
-		wait_result = wait(&wstatus);
-		if (wait_result == last_pid)
-		{
-			if (WIFSIGNALED(wstatus))
-				status = 128 + WTERMSIG(wstatus);
-			else
-				status = WEXITSTATUS(wstatus);
-		}
-		else if (wait_result < 0)
-		{
-			if (errno == ECHILD)
-				break ;
-			else if (errno == EINTR)
-				continue ;
-			else
-				fatal_error("wait");
-		}
-	}
-	setup_sigint_with_signum();
-	return (status);
 }
 
 int	exec(t_command *node)

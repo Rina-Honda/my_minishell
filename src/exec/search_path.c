@@ -6,11 +6,33 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:00:09 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:00:37 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:02:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static char	*build_path(const char *dir, const char *filename)
+{
+	char	candidte_path[PATH_MAX];
+	char	*dup;
+
+	ft_bzero(candidte_path, PATH_MAX);
+	if (ft_strlen(dir) + 1 + ft_strlen(filename) < PATH_MAX)
+	{
+		ft_strlcat(candidte_path, dir, PATH_MAX);
+		ft_strlcat(candidte_path, "/", PATH_MAX);
+		ft_strlcat(candidte_path, filename, PATH_MAX);
+		if (access(candidte_path, X_OK) == 0)
+		{
+			dup = ft_strdup(candidte_path);
+			if (dup == NULL)
+				fatal_error("ft_strdup");
+			return (dup);
+		}
+	}
+	return (NULL);
+}
 
 char	*search_path(const char *filename)
 {
@@ -28,18 +50,9 @@ char	*search_path(const char *filename)
 			ft_strlcpy(path, value, end - value + 1);
 		else
 			ft_strlcpy(path, value, PATH_MAX);
-		if (ft_strlen(path) + 1 + ft_strlen(filename) < PATH_MAX)
-		{
-			ft_strlcat(path, "/", PATH_MAX);
-			ft_strlcat(path, filename, PATH_MAX);
-			if (access(path, X_OK) == 0)
-			{
-				dup = ft_strdup(path);
-				if (dup == NULL)
-					fatal_error("ft_strdup");
-				return (dup);
-			}
-		}
+		dup = build_path(path, filename);
+		if (dup)
+			return (dup);
 		if (end == NULL)
 			return (NULL);
 		value = end + 1;
