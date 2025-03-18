@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 09:07:01 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 09:32:40 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 09:50:06 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,7 @@ static void	append_path_elem(char *dst, size_t dst_size,
 	while (src[elem_len] && src[elem_len] != '/')
 		elem_len++;
 	if (dst_len == 0 || dst[dst_len - 1] != '/')
-	{
-		if (dst_len < dst_size - 1)
-		{
-			dst[dst_len] = '/';
-			dst[dst_len + 1] = '\0';
-			dst_len++;
-		}
-		else
-			return ;
-	}
+		ft_strlcat(dst, "/", dst_size);
 	i = 0;
 	while (i < elem_len && dst_len < dst_size - 1)
 	{
