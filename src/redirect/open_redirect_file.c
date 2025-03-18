@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:43:22 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:54:23 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 12:00:45 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	openfd(t_command *node)
 		return (open(node->filename->word, O_RDONLY));
 	else if (node->kind == REDIR_APPEND)
 		return (open(node->filename->word,
-			O_CREAT | O_WRONLY | O_APPEND, 0644));
+				O_CREAT | O_WRONLY | O_APPEND, 0644));
 	else if (node->kind == REDIR_HEREDOC)
 		return (read_heredoc(node->delimiter->word));
 	else

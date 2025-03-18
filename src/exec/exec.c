@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 10:36:38 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:57:58 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ pid_t	exec_pipeline(t_command *node)
 	{
 		reset_signal();
 		if (open_redirect_file(node) < 0)
-			exit(EXIT_FAILURE); //todo
+			exit(EXIT_FAILURE);
 		prepare_pipe_child(node);
 		if (is_builtin(node))
 			exit(exec_builtin(node));
@@ -83,7 +83,7 @@ int	exec(t_command *node)
 	if (!node->next && is_builtin(node))
 	{
 		if (open_redirect_file(node) < 0)
-			exit(EXIT_FAILURE); //todo
+			exit(EXIT_FAILURE);
 		status = exec_builtin(node);
 	}
 	else

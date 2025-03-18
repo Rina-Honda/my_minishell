@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:02:48 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 12:01:38 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	builtin_exit(char **argv)
 		exit(last_status);
 	if (argv[2])
 	{
-		builtin_error("exit", NULL,"too many arguments");
+		builtin_error("exit", NULL, "too many arguments");
 		return (1);
 	}
 	arg = argv[1];
@@ -50,6 +50,6 @@ int	builtin_exit(char **argv)
 		if (errno == 0 && *end_ptr == '\0')
 			exit((unsigned char)result);
 	}
-	builtin_error("exit", NULL,"numeric argument required");
+	builtin_error("exit", NULL, "numeric argument required");
 	exit(2);
 }
