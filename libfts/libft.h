@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 22:27:08 by rhonda            #+#    #+#             */
-/*   Updated: 2025/02/05 22:50:20 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 12:36:47 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,13 @@ int		ft_print_percent(void);
 
 //  Gnl
 char	*get_next_line(int fd);
+
+//  Dprintf
+int		ft_dprintf(int fd, const char *format, ...);
+int		ft_dprint_c(va_list *ap, int fd);
+int		ft_dprint_s(va_list *ap, int fd);
+int		ft_dprint_p(va_list *ap, int fd);
+int		ft_dprint_idux(va_list *ap, int specifier, int fd);
+int		ft_dprint_percent(int fd);
 
 #endif

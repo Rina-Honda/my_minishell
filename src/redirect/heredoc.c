@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:44:22 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:22:01 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 12:38:25 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	heredoc_loop(int pipefd[2], const char *delimiter)
 			free(line);
 			break ;
 		}
-		dprintf(pipefd[1], "%s\n", line);
+		ft_dprintf(pipefd[1], "%s\n", line);
 		free(line);
 	}
 }

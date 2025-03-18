@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 21:30:06 by rhonda            #+#    #+#              #
-#    Updated: 2025/02/05 22:58:54 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/18 12:29:50 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,11 +61,18 @@ PRINTF = printf/ft_printf.c \
 		printf/ft_print_idux.c \
 		printf/ft_print_p.c \
 		printf/ft_print_percent.c \
-		printf/ft_strchr_printf.c
+		printf/ft_strchr_printf.c \
 
 GNL = gnl/get_next_line.c \
 
-SRCS = $(LIBFT) $(PRINTF) $(GNL)
+DPRINTF = dprintf/ft_dprintf.c \
+		dprintf/ft_dprint_c.c \
+		dprintf/ft_dprint_s.c \
+		dprintf/ft_dprint_idux.c \
+		dprintf/ft_dprint_p.c \
+		dprintf/ft_dprint_percent.c
+
+SRCS = $(LIBFT) $(PRINTF) $(GNL) $(DPRINTF)
 OBJS	= $(SRCS:.c=.o)
 
 all: $(NAME)
