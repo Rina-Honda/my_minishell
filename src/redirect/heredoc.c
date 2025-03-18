@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:44:22 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:44:55 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:22:01 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 bool	readline_interrupted = false;
 
-int	read_heredoc(const char *delimiter)
+static void	heredoc_loop(int pipefd[2], const char *delimiter)
 {
 	char	*line;
-	int		pipefd[2];
 
-	if (pipe(pipefd) < 0)
-		fatal_error("pipe");
-	readline_interrupted = false;
 	while (1)
 	{
 		line = readline("> ");
@@ -40,6 +36,16 @@ int	read_heredoc(const char *delimiter)
 		dprintf(pipefd[1], "%s\n", line);
 		free(line);
 	}
+}
+
+int	read_heredoc(const char *delimiter)
+{
+	int		pipefd[2];
+
+	if (pipe(pipefd) < 0)
+		fatal_error("pipe");
+	readline_interrupted = false;
+	heredoc_loop(pipefd, delimiter);
 	close(pipefd[1]);
 	if (readline_interrupted)
 	{
