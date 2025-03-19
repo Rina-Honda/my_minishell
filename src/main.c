@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 18:00:41 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:09:07 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int	main(void)
 		interpret(line, &shell);
 		free(line);
 	}
+	free_map(shell.envmap);
 	exit(shell.last_status);
 }
