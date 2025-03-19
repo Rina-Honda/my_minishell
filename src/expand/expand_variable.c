@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:12:42 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:05:21 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:08:04 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	is_variable(char *s)
 	return (s[0] == '$' && is_alpha_underscore(s[1]));
 }
 
-void	expand_variable_str(char **dst, char **rest, char *ptr)
+void	expand_variable_str(char **dst, char **rest, char *ptr, t_shell *shell)
 {
 	char	*name;
 	char	*value;
@@ -33,7 +33,7 @@ void	expand_variable_str(char **dst, char **rest, char *ptr)
 	append_char(&name, *ptr++);
 	while (is_alpha_num_underscore(*ptr))
 		append_char(&name, *ptr++);
-	value = ft_getenv(name);
+	value = ft_getenv(name, shell);
 	free(name);
 	if (value)
 	{

@@ -6,15 +6,13 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:44:22 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 12:38:25 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:29:50 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	readline_interrupted = false;
-
-static void	heredoc_loop(int pipefd[2], const char *delimiter)
+static void	heredoc_loop(int pipefd[2], const char *delimiter, t_shell *shell)
 {
 	char	*line;
 
@@ -23,7 +21,7 @@ static void	heredoc_loop(int pipefd[2], const char *delimiter)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (readline_interrupted)
+		if (shell->readline_interrupted)
 		{
 			free(line);
 			break ;
@@ -38,16 +36,16 @@ static void	heredoc_loop(int pipefd[2], const char *delimiter)
 	}
 }
 
-int	read_heredoc(const char *delimiter)
+int	read_heredoc(const char *delimiter, t_shell *shell)
 {
 	int		pipefd[2];
 
 	if (pipe(pipefd) < 0)
 		fatal_error("pipe");
-	readline_interrupted = false;
-	heredoc_loop(pipefd, delimiter);
+	shell->readline_interrupted = false;
+	heredoc_loop(pipefd, delimiter, shell);
 	close(pipefd[1]);
-	if (readline_interrupted)
+	if (shell->readline_interrupted)
 	{
 		close(pipefd[0]);
 		return (-1);

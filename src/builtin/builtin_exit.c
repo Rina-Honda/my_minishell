@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 12:01:38 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:16:19 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ bool	is_numeric(char *s)
 	return (true);
 }
 
-int	builtin_exit(char **argv)
+int	builtin_exit(char **argv, t_shell *shell)
 {
 	long	result;
 	char	*arg;
 	char	*end_ptr;
 
 	if (!argv[1])
-		exit(last_status);
+		exit(shell->last_status);
 	if (argv[2])
 	{
 		builtin_error("exit", NULL, "too many arguments");

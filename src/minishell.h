@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 12:09:17 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 01:24:50 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,20 @@ typedef struct s_map
 	t_item	item_head;
 }	t_map;
 
+typedef struct s_shell
+{
+	bool	syntax_error;
+	int		last_status;
+	bool	readline_interrupted;
+	t_map	*envmap;
+}	t_shell;
+
 // global variable
-extern bool						syntax_error;
-extern int						last_status;
-extern bool						readline_interrupted;
-extern volatile sig_atomic_t	sig;
-extern t_map					*envmap;
+extern volatile sig_atomic_t	g_sig;
 
 //prottype
 // tokenize
-t_token		*tokenize(char *line);
+t_token		*tokenize(char *line, t_shell *shell);
 char		**token_list_to_argv(t_token *token);
 t_token		*new_token(char *word, t_token_kind kind);
 bool		is_blank(char c);
@@ -118,41 +122,41 @@ void		append_token_recursive(t_token **tokens, t_token *token);
 bool		at_eof(t_token *token);
 bool		equal_operator(t_token *token, char *operator);
 bool		is_word(const char *s);
-t_token		*word(char **rest, char *line);
+t_token		*word(char **rest, char *line, t_shell *shell);
 
 // parse
-t_command	*parse(t_token *token);
+t_command	*parse(t_token *token, t_shell *shell);
 t_command	*new_command(t_command_kind kind);
-t_command	*pipeline(t_token **rest, t_token *token);
+t_command	*pipeline(t_token **rest, t_token *token, t_shell *shell);
 t_command	*redirect_out(t_token **rest, t_token *token);
 t_command	*redirect_in(t_token **rest, t_token *token);
 t_command	*redirect_append(t_token **rest, t_token *token);
 t_command	*redirect_heredoc(t_token **rest, t_token *token);
-t_command	*simple_command(t_token **rest, t_token *token);
+t_command	*simple_command(t_token **rest, t_token *token, t_shell *shell);
 
 // expand
-void		expand(t_command *node);
+void		expand(t_command *node, t_shell *shell);
 void		expand_quote_removal_recursive(t_command *node);
 void		append_char(char **s, char c);
-void		expand_variable_recursive(t_command *node);
+void		expand_variable_recursive(t_command *node, t_shell *shell);
 bool		is_variable(char *s);
-void		expand_variable_str(char **dst, char **rest, char *ptr);
+void		expand_variable_str(char **dst, char **rest, char *ptr, t_shell *shell);
 bool		is_special_parameter(char *s);
-void		expand_special_parameter_str(char **dst, char **rest, char *ptr);
+void		expand_special_parameter_str(char **dst, char **rest,
+				char *ptr, t_shell *shell);
 
 // exec
-int			exec(t_command *node);
-int			exec_nonbuiltin(t_command *node)__attribute__((noreturn));
-char		*search_path(const char *filename);
+int			exec(t_command *node, t_shell *shell);
+int			exec_nonbuiltin(t_command *node, t_shell *shell);
+char		*search_path(const char *filename, t_shell *shell);
 int			wait_pipeline(pid_t last_pid);
 
 // redirect
-int			open_redirect_file(t_command *redirect);
+int			open_redirect_file(t_command *node, t_shell *shell);
 void		do_redirect(t_command *redirect);
 void		reset_redirect(t_command *redirect);
-int			open_redirect_file(t_command *node);
 int			stashfd(int fd);
-int			read_heredoc(const char *delimiter);
+int			read_heredoc(const char *delimiter, t_shell *shell);
 
 // pipe
 void		prepare_pipe(t_command *node);
@@ -170,8 +174,8 @@ void		reset_signal(void);
 void		reset_sig(int signum);
 
 // env
-void		init_env(void);
-char		*ft_getenv(const char *name);
+void		init_env(t_shell *shell);
+char		*ft_getenv(const char *name, t_shell *shell);
 char		**get_environ(t_map *map);
 
 // map
@@ -186,15 +190,15 @@ int			map_set(t_map *map, const char *name, const char *value);
 
 // builtin
 bool		is_builtin(t_command *node);
-int			exec_builtin(t_command *node);
-int			builtin_exit(char **argv);
-int			builtin_export(char **argv);
-int			builtin_unset(char **argv);
-int			builtin_env(char **argv);
-int			builtin_cd(char **argv);
+int			exec_builtin(t_command *node, t_shell *shell);
+int			builtin_exit(char **argv, t_shell *shell);
+int			builtin_export(char **argv, t_shell *shell);
+int			builtin_unset(char **argv, t_shell *shell);
+int			builtin_env(char **argv, t_shell *shell);
+int			builtin_cd(char **argv, t_shell *shell);
 char		*resolve_pwd(char *old_pwd, char *path);
 int			builtin_echo(char **argv);
-int			builtin_pwd(char **argv);
+int			builtin_pwd(char **argv, t_shell *shell);
 
 // error
 void		fatal_error(const char *msg) __attribute__((noreturn));
@@ -202,8 +206,10 @@ void		err_exit(const char *locatino, const char *msg, int status)
 			__attribute__((noreturn));
 void		assert_error(const char *msg)__attribute__((noreturn));
 void		todo(const char *msg)__attribute__((noreturn));
-void		tokenize_error(const char *location, char **rest, char *line);
-void		parse_error(const char *location, t_token **rest, t_token *token);
+void		tokenize_error(const char *location, char **rest,
+				char *line, t_shell *shell);
+void		parse_error(const char *location, t_token **rest, t_token *token,
+				t_shell *shell);
 void		xperror(const char *location);
 void		builtin_error(const char *func, const char *name, const char *err);
 void		perror_prefix(void);

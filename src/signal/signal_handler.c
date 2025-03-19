@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:47:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 23:49:08 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 15:34:33 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handler_signum(int signum)
 {
-	sig = signum;
+	g_sig = signum;
 }
 
 void	handler_newline(int signum)

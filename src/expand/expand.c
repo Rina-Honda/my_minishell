@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:09:16 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 18:01:05 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	append_char(char **s, char c)
 	*s = new;
 }
 
-void	expand(t_command *node)
+void	expand(t_command *node, t_shell *shell)
 {
-	expand_variable_recursive(node);
+	expand_variable_recursive(node, shell);
 	expand_quote_removal_recursive(node);
 }

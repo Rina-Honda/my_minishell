@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:57:58 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:31:34 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	validate_access(const char *path, const char *filename)
 		err_exit(filename, "Permission denied", 126);
 }
 
-int	exec_nonbuiltin(t_command *node)
+int	exec_nonbuiltin(t_command *node, t_shell *shell)
 {
 	char	*path;
 	char	**argv;
@@ -40,15 +40,15 @@ int	exec_nonbuiltin(t_command *node)
 	argv = token_list_to_argv(node->command->args);
 	path = argv[0];
 	if (strchr(path, '/') == NULL)
-		path = search_path(path);
+		path = search_path(path, shell);
 	validate_access(path, argv[0]);
-	execve(path, argv, get_environ(envmap));
+	execve(path, argv, get_environ(shell->envmap));
 	free(argv);
 	reset_redirect(node->command->redirects);
 	fatal_error("execve");
 }
 
-pid_t	exec_pipeline(t_command *node)
+static pid_t	exec_pipeline(t_command *node, t_shell *shell)
 {
 	pid_t		pid;
 
@@ -61,35 +61,36 @@ pid_t	exec_pipeline(t_command *node)
 	else if (pid == 0)
 	{
 		reset_signal();
-		if (open_redirect_file(node) < 0)
+		if (open_redirect_file(node, shell) < 0)
 			exit(EXIT_FAILURE);
 		prepare_pipe_child(node);
 		if (is_builtin(node))
-			exit(exec_builtin(node));
+			exit(exec_builtin(node, shell));
 		else
-			exec_nonbuiltin(node);
+			exec_nonbuiltin(node, shell);
 	}
 	prepare_pipe_parent(node);
 	if (node->next)
-		return (exec_pipeline(node->next));
+		return (exec_pipeline(node->next, shell));
 	return (pid);
 }
 
-int	exec(t_command *node)
+int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
 	int		status;
 
 	if (!node->next && is_builtin(node))
 	{
-		if (open_redirect_file(node) < 0)
+		if (open_redirect_file(node, shell) < 0)
 			exit(EXIT_FAILURE);
-		status = exec_builtin(node);
+		status = exec_builtin(node, shell);
 	}
 	else
 	{
-		last_pid = exec_pipeline(node);
+		last_pid = exec_pipeline(node, shell);
 		status = wait_pipeline(last_pid);
 	}
+	shell->last_status = status;
 	return (status);
 }

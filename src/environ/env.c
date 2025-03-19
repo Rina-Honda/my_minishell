@@ -6,13 +6,11 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:17:03 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 08:53:50 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 01:23:44 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-t_map	*envmap;
 
 static void	init_envmap(t_map *map, char **envp)
 {
@@ -23,19 +21,19 @@ static void	init_envmap(t_map *map, char **envp)
 	}
 }
 
-void	init_env(void)
+void	init_env(t_shell *shell)
 {
 	extern char	**environ;
 
-	envmap = map_new();
-	init_envmap(envmap, environ);
+	shell->envmap = map_new();
+	init_envmap(shell->envmap, environ);
 }
 
-char	*ft_getenv(const char *name)
+char	*ft_getenv(const char *name, t_shell *shell)
 {
 	t_item	*item;
 
-	item = map_get(envmap, name);
+	item = map_get(shell->envmap, name);
 	if (!item)
 		return (NULL);
 	return (item->value);

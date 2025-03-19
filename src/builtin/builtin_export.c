@@ -6,17 +6,17 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 13:48:40 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:32:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:12:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_all_env(void)
+static void print_all_env(t_shell *shell)
 {
 	t_item	*current;
 
-	current = envmap->item_head.next;
+	current = shell->envmap->item_head.next;
 	while (current)
 	{
 		if (current->value)
@@ -27,21 +27,21 @@ void	print_all_env(void)
 	}
 }
 
-int	builtin_export(char **argv)
+int	builtin_export(char **argv, t_shell *shell)
 {
 	size_t	i;
 	int		status;
 
 	if (!argv[1])
 	{
-		print_all_env();
+		print_all_env(shell);
 		return (0);
 	}
 	status = 0;
 	i = 1;
 	while (argv[i])
 	{
-		if (map_put(envmap, argv[i], true) < 0)
+		if (map_put(shell->envmap, argv[i], true) < 0)
 		{
 			builtin_error("export", argv[i], "not a valid identifier");
 			status = 1;

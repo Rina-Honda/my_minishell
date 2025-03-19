@@ -6,13 +6,13 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 00:18:57 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:11:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:57:26 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_command	*parse(t_token *token)
+t_command	*parse(t_token *token, t_shell *shell)
 {
-	return (pipeline(&token, token));
+	return (pipeline(&token, token, shell));
 }

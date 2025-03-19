@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 18:15:18 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/17 22:02:32 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:22:09 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ bool	is_equal_inode(const char *path1, const char *path2)
 	return (st1.st_ino == st2.st_ino);
 }
 
-int	builtin_pwd(char **argv)
+int	builtin_pwd(char **argv, t_shell *shell)
 {
 	char	*pwd;
 	char	cwd[PATH_MAX];
 
 	(void)argv;
-	pwd = ft_getenv("PWD");
+	pwd = ft_getenv("PWD", shell->envmap);
 	if (!pwd || !is_equal_inode(pwd, "."))
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)

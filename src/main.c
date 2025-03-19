@@ -6,33 +6,34 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/16 23:54:02 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 18:00:41 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	last_status;
-
-void	interpret(char *line, int *status_loc)
+static void	interpret(char *line, t_shell *shell)
 {
 	t_token		*token;
 	t_command	*node;
 
-	token = tokenize(line);
+	token = tokenize(line, shell);
 	if (at_eof(token))
+	{
+		free_token(token);
 		return ;
-	else if (syntax_error)
-		*status_loc = ERROR_TOKENIZE;
+	}
+	else if (shell->syntax_error)
+		shell->last_status = ERROR_TOKENIZE;
 	else
 	{
-		node = parse(token);
-		if (syntax_error)
-			*status_loc = ERROR_PARSE;
+		node = parse(token, shell);
+		if (shell->syntax_error)
+			shell->last_status = ERROR_PARSE;
 		else
 		{
-			expand(node);
-			*status_loc = exec(node);
+			expand(node, shell);
+			shell->last_status = exec(node, shell);
 		}
 		free_node(node);
 	}
@@ -42,10 +43,13 @@ void	interpret(char *line, int *status_loc)
 int	main(void)
 {
 	char	*line;
+	t_shell	shell;
 
-	init_env();
+	shell.last_status = 0;
+	shell.syntax_error = false;
+	shell.readline_interrupted = false;
+	init_env(&shell);
 	setup_signal();
-	last_status = 0;
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -53,8 +57,8 @@ int	main(void)
 			break ;
 		if (*line)
 			add_history(line);
-		interpret(line, &last_status);
+		interpret(line, &shell);
 		free(line);
 	}
-	exit(last_status);
+	exit(shell.last_status);
 }

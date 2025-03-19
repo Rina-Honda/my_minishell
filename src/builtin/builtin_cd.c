@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 22:23:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 09:06:44 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:21:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,21 @@ size_t	count_words(char **argv)
 	return (count);
 }
 
-void	update_oldpwd(char *old_pwd)
+static void	update_oldpwd(char *old_pwd, t_shell *shell)
 {
 	if (!old_pwd)
-		map_set(envmap, "OLDPWD", "");
+		map_set(shell->envmap, "OLDPWD", "");
 	else
-		map_set(envmap, "OLDPWD", old_pwd);
+		map_set(shell->envmap, "OLDPWD", old_pwd);
 }
 
-int	set_path(char *path, size_t path_size, char *arg)
+static int	set_path(char *path, size_t path_size, char *arg, t_shell *shell)
 {
 	char	*home;
 
 	if (!arg)
 	{
-		home = ft_getenv("HOME");
+		home = ft_getenv("HOME", shell->envmap);
 		if (!home)
 		{
 			builtin_error("cd", NULL, "$HOME not set");
@@ -51,7 +51,7 @@ int	set_path(char *path, size_t path_size, char *arg)
 	return (0);
 }
 
-int	builtin_cd(char **argv)
+int	builtin_cd(char **argv, t_shell *shell)
 {
 	char	*old_pwd;
 	char	path[PATH_MAX];
@@ -62,9 +62,9 @@ int	builtin_cd(char **argv)
 		builtin_error("cd", NULL, "too many arguments");
 		return (1);
 	}
-	old_pwd = ft_getenv("PWD");
-	update_oldpwd(old_pwd);
-	if (set_path(path, PATH_MAX, argv[1]) < 0)
+	old_pwd = ft_getenv("PWD", shell->envmap);
+	update_oldpwd(old_pwd, shell);
+	if (set_path(path, PATH_MAX, argv[1], shell) < 0)
 		return (1);
 	if (chdir(path) < 0)
 	{
@@ -75,7 +75,7 @@ int	builtin_cd(char **argv)
 		return (1);
 	}
 	new_pwd = resolve_pwd(old_pwd, path);
-	map_set(envmap, "PWD", new_pwd);
+	map_set(shell->envmap, "PWD", new_pwd);
 	free(new_pwd);
 	return (0);
 }

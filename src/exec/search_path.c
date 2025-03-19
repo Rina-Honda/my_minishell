@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:00:09 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 11:02:21 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:10:36 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static char	*build_path(const char *dir, const char *filename)
 	return (NULL);
 }
 
-char	*search_path(const char *filename)
+char	*search_path(const char *filename, t_shell *shell)
 {
 	char	path[PATH_MAX];
 	char	*value;
 	char	*end;
 	char	*dup;
 
-	value = ft_getenv("PATH");
+	value = ft_getenv("PATH", shell);
 	while (*value)
 	{
 		ft_bzero(path, PATH_MAX);

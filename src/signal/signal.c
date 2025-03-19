@@ -6,22 +6,21 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 22:54:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 00:41:16 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/18 15:06:07 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-volatile sig_atomic_t	sig = 0;
+volatile sig_atomic_t	g_sig = 0;
 
 int	check_state(void)
 {
-	if (sig == 0)
+	if (g_sig == 0)
 		return (0);
-	else if (sig == SIGINT)
+	else if (g_sig == SIGINT)
 	{
-		sig = 0;
-		readline_interrupted = true;
+		g_sig = 0;
 		rl_replace_line("", 0);
 		rl_done = 1;
 		return (0);
