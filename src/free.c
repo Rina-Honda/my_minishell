@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 00:35:06 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/09 14:43:24 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:06:25 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,24 @@ void	free_node(t_command *node)
 	free_node(node->command);
 	free_node(node->next);
 	free(node);
+}
+
+static void	free_item(t_item *item)
+{
+	if (!item)
+		return ;
+	if (item->name)
+		free(item->name);
+	if (item->value)
+		free(item->value);
+	free_item(item->next);
+	free(item);
+}
+
+void	free_map(t_map *map)
+{
+	if (!map)
+		return ;
+	free_item(map->item_head.next);
+	free(map);
 }

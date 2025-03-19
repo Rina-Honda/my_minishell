@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/19 01:24:50 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 20:55:01 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void		perror_prefix(void);
 void		free_argv(char **argv);
 void		free_token(t_token *token);
 void		free_node(t_command *node);
+void		free_map(t_map *map);
 
 // util
 bool		starts_with(const char *s, const char *keyword);
