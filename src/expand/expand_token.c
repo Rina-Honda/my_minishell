@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 11:10:47 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 17:07:36 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:40:44 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	append_double_quote(char **dst, char **rest, char *ptr, t_shell *shell)
 			if (*ptr == '\0')
 				assert_error("Unclosed double quote");
 			else if (is_variable(ptr))
-				expand_variable_str(dst, &ptr, ptr);
+				expand_variable_str(dst, &ptr, ptr, shell);
 			else if (is_special_parameter(ptr))
 				expand_special_parameter_str(dst, &ptr, ptr, shell);
 			else
@@ -79,7 +79,7 @@ void	expand_variable_token_recursive(t_token *token, t_shell *shell)
 		else if (*ptr == DOUBLE_QUOTE)
 			append_double_quote(&new_word, &ptr, ptr, shell);
 		else if (is_variable(ptr))
-			expand_variable_str(&new_word, &ptr, ptr);
+			expand_variable_str(&new_word, &ptr, ptr, shell);
 		else if (is_special_parameter(ptr))
 			expand_special_parameter_str(&new_word, &ptr, ptr, shell);
 		else

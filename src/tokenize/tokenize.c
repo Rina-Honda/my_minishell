@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:18:07 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 16:59:29 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:39:14 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_token	*tokenize(char *line, t_shell *shell)
 		}
 		else if (is_word(line))
 		{
-			token->next = word(&line, line);
+			token->next = word(&line, line, shell);
 			token = token->next;
 		}
 		else

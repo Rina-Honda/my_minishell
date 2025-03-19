@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 18:15:18 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:09 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:43:04 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	builtin_pwd(char **argv, t_shell *shell)
 	char	cwd[PATH_MAX];
 
 	(void)argv;
-	pwd = ft_getenv("PWD", shell->envmap);
+	pwd = ft_getenv("PWD", shell);
 	if (!pwd || !is_equal_inode(pwd, "."))
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)

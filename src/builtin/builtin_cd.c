@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 22:23:38 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 17:21:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:42:31 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	set_path(char *path, size_t path_size, char *arg, t_shell *shell)
 
 	if (!arg)
 	{
-		home = ft_getenv("HOME", shell->envmap);
+		home = ft_getenv("HOME", shell);
 		if (!home)
 		{
 			builtin_error("cd", NULL, "$HOME not set");
@@ -62,7 +62,7 @@ int	builtin_cd(char **argv, t_shell *shell)
 		builtin_error("cd", NULL, "too many arguments");
 		return (1);
 	}
-	old_pwd = ft_getenv("PWD", shell->envmap);
+	old_pwd = ft_getenv("PWD", shell);
 	update_oldpwd(old_pwd, shell);
 	if (set_path(path, PATH_MAX, argv[1], shell) < 0)
 		return (1);
