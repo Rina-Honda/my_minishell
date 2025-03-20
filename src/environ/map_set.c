@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:52:27 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/19 21:11:29 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 14:08:17 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,11 @@ int	map_put(t_map *map, const char *str, bool allow_empty_value)
 
 	set_name_value(str, &name, &value);
 	if (!value && !allow_empty_value)
+	{
+		if (name)
+			free(name);
 		return (-1);
+	}
 	result = map_set(map, name, value);
 	free(name);
 	free(value);
