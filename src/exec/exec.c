@@ -3,32 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/20 18:41:45 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 23:06:12 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	validate_access(const char *path, const char *filename)
+void	validate_access(const char *path, t_command *node, t_shell *shell, char **argv)
+{
+	char	*filename;
+
+	filename = node->command->args->word;
+	if (path == NULL)
+	{
+		free_argv(argv);
+		err_exit(node, "command not found", 127, shell);
+	}
+	if (access(path, F_OK) < 0)
+	{
+		free_argv(argv);
+		err_exit(node, "command not found", 127, shell);
+	}
+}
+
+void	validate_access_02(const char *path, t_command *node, t_shell *shell, char **argv)
 {
 	struct stat	st;
+	char	*filename;
 
-	if (path == NULL)
-		err_exit(filename, "command not found", 127);
-	if (access(path, F_OK) < 0)
-		err_exit(filename, "command not found", 127);
+	filename = node->command->args->word;
 	if (stat(path, &st) == -1)
 	{
+		free_argv(argv);
 		perror("stat error");
 		exit(EXIT_FAILURE);
 	}
 	if (S_ISDIR(st.st_mode))
-		err_exit(filename, "Is a directory", 126);
+	{
+		free_argv(argv);
+		err_exit(node, "Is a directory", 126, shell);
+	}
 	if (access(path, X_OK) < 0)
-		err_exit(filename, "Permission denied", 126);
+	{
+		free_argv(argv);
+		err_exit(node, "Permission denied", 126, shell);
+	}
 }
 
 int	exec_nonbuiltin(t_command *node, t_shell *shell)
@@ -42,7 +64,8 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	path = argv[0];
 	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path, shell);
-	validate_access(path, argv[0]);
+	validate_access(path, node, shell, argv);
+	validate_access_02(path, node, shell, argv);
 	env = get_environ(shell->envmap);
 	execve(path, argv, env);
 	free(argv);
