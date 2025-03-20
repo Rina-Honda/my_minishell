@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/19 20:55:01 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 19:00:52 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int			map_set(t_map *map, const char *name, const char *value);
 // builtin
 bool		is_builtin(t_command *node);
 int			exec_builtin(t_command *node, t_shell *shell);
-int			builtin_exit(char **argv, t_shell *shell);
+int			builtin_exit(char **argv, t_shell *shell, t_command *node);
 int			builtin_export(char **argv, t_shell *shell);
 int			builtin_unset(char **argv, t_shell *shell);
 int			builtin_env(char **argv, t_shell *shell);

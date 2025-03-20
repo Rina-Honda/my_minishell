@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/09 00:54:47 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/20 14:48:58 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/20 16:05:50 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ norm
 
 
 rhonda@c6r2s13 ~/Cursus/my_minishell
- % valgrind --leak-check=full --show-leak-kinds=all --suppressions=.suppression ./minishell
+ % valgrind --leak-check=full --show-leak-kinds=all --suppressions=.suppression -q ./minishell
 ==600247== Memcheck, a memory error detector
 ==600247== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
 ==600247== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
