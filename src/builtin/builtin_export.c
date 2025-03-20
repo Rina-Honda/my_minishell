@@ -6,13 +6,13 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 13:48:40 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 17:12:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 13:47:43 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void print_all_env(t_shell *shell)
+static void	print_all_env(t_shell *shell)
 {
 	t_item	*current;
 

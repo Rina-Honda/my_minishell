@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 17:31:34 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 13:41:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
 	path = argv[0];
-	if (strchr(path, '/') == NULL)
+	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path, shell);
 	validate_access(path, argv[0]);
 	execve(path, argv, get_environ(shell->envmap));

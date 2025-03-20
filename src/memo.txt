@@ -6,7 +6,11 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/09 00:54:47 by rhonda            #+#    #+#              #
+<<<<<<< Updated upstream
 #    Updated: 2025/03/19 01:07:43 by rhonda           ###   ########.fr        #
+=======
+#    Updated: 2025/03/18 13:24:11 by rhonda           ###   ########.fr        #
+>>>>>>> Stashed changes
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +49,7 @@ stderrを解除する
 leak
 norm - OK
 使用禁止関数 - OK
-pipeline
+(pipeline)
 global
 infinite_loop.c memo.txtを消す
 
