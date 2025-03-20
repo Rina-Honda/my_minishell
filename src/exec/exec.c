@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/20 13:41:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 18:41:45 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 {
 	char	*path;
 	char	**argv;
+	char	**env;
 
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
@@ -42,8 +43,10 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path, shell);
 	validate_access(path, argv[0]);
-	execve(path, argv, get_environ(shell->envmap));
+	env = get_environ(shell->envmap);
+	execve(path, argv, env);
 	free(argv);
+	free_argv(env);
 	reset_redirect(node->command->redirects);
 	fatal_error("execve");
 }
@@ -78,19 +81,8 @@ static pid_t	exec_pipeline(t_command *node, t_shell *shell)
 int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
-	int		status;
 
-	if (!node->next && is_builtin(node))
-	{
-		if (open_redirect_file(node, shell) < 0)
-			exit(EXIT_FAILURE);
-		status = exec_builtin(node, shell);
-	}
-	else
-	{
-		last_pid = exec_pipeline(node, shell);
-		status = wait_pipeline(last_pid);
-	}
-	shell->last_status = status;
-	return (status);
+	last_pid = exec_pipeline(node, shell);
+	shell->last_status = wait_pipeline(last_pid);
+	return (shell->last_status);
 }

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:20 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 19:01:23 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	exec_builtin(t_command *node, t_shell *shell)
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
 	if (ft_strcmp(argv[0], "exit") == 0)
-		status = builtin_exit(argv, shell);
+		status = builtin_exit(argv, shell, node);
 	else if (ft_strcmp(argv[0], "export") == 0)
 		status = builtin_export(argv, shell);
 	else if (ft_strcmp(argv[0], "unset") == 0)
@@ -65,5 +65,7 @@ int	exec_builtin(t_command *node, t_shell *shell)
 		todo("exec_builtin");
 	free_argv(argv);
 	reset_redirect(node->command->redirects);
+	free_map(shell->envmap);
+	free_node(node);
 	return (status);
 }

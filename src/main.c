@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/19 21:09:07 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 18:26:15 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ static void	interpret(char *line, t_shell *shell)
 
 	token = tokenize(line, shell);
 	if (at_eof(token))
+		free_token(token);
+	else if (shell->syntax_error)
 	{
 		free_token(token);
-		return ;
-	}
-	else if (shell->syntax_error)
 		shell->last_status = ERROR_TOKENIZE;
+	}
 	else
 	{
 		node = parse(token, shell);
+		free_token(token);
 		if (shell->syntax_error)
 			shell->last_status = ERROR_PARSE;
 		else
@@ -37,7 +38,6 @@ static void	interpret(char *line, t_shell *shell)
 		}
 		free_node(node);
 	}
-	free_token(token);
 }
 
 int	main(void)
@@ -60,6 +60,7 @@ int	main(void)
 		interpret(line, &shell);
 		free(line);
 	}
+	rl_clear_history();
 	free_map(shell.envmap);
 	exit(shell.last_status);
 }
