@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/20 22:53:52 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/21 21:30:14 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ bool	is_builtin(t_command *node)
 	return (false);
 }
 
-int	exec_builtin(t_command *node, t_shell *shell)
+int	exec_builtin(t_command *current, t_shell *shell, t_command *node)
 {
 	int		status;
 	char	**argv;
 
-	do_redirect(node->command->redirects);
-	argv = token_list_to_argv(node->command->args);
+	printf("a\n");
+	do_redirect(current->command->redirects);
+	argv = token_list_to_argv(current->command->args);
 	if (ft_strcmp(argv[0], "exit") == 0)
 		status = builtin_exit(argv, shell, node);
 	else if (ft_strcmp(argv[0], "export") == 0)
@@ -60,12 +61,21 @@ int	exec_builtin(t_command *node, t_shell *shell)
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		status = builtin_echo(argv);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
+	{
+		printf("b\n");
 		status = builtin_pwd(argv, shell);
+	}
 	else
 		todo("exec_builtin");
+	printf("d\n");
 	free_argv(argv);
-	reset_redirect(node->command->redirects);
+	printf("e\n");
+	reset_redirect(current->command->redirects);
+	printf("f\n");
 	free_map(shell->envmap);
+	printf("g\n");
+	printf("builtin\n");
 	free_node(node);
+	printf("h\n");
 	return (status);
 }

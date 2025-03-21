@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/09 00:54:47 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/20 16:05:50 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/21 21:02:21 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,9 +45,9 @@ stderrを解除する
 
 //todo
 leak
-norm - OK
+norm
 使用禁止関数 - OK
-(pipeline)
+(pipeline) - OK
 global - OK
 infinite_loop.c memo.txtを消す
 
@@ -279,3 +279,65 @@ minishell$
 ★クオテーションの仕様手本
 rhonda@TABLET-PM80C8FG:~/minishell/my_minishell$ echo "$USER" '$USER' "'$USER'" '"$USER"' ""$USER"" ''$USER''
 rhonda $USER 'rhonda' "$USER" rhonda rhonda
+
+
+rhonda@TABLET-PM80C8FG:~/minishell/next_minishell$ valgrind --leak-check=full --show-leak-kinds=all --suppressions=.suppression -q ./minishell
+minishell$ ls | pwd
+/home/rhonda/minishell/next_minishell
+builtin
+kind: 0
+kind: 1
+==31270== 3 bytes in 1 blocks are still reachable in loss record 1 of 71
+==31270==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31270==    by 0x10A5D1: append_char (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10AFBC: remove_quote_recursive (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10B059: expand_quote_removal_recursive (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10B099: expand_quote_removal_recursive (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A694: expand (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109569: interpret (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109620: main (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==
+==31270== 9 bytes in 1 blocks are still reachable in loss record 4 of 71
+==31270==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31270==    by 0x489BBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==31270==    by 0x4879694: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==31270==    by 0x4883D2A: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==31270==    by 0x1095EB: main (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==
+==31270== 24 bytes in 1 blocks are still reachable in loss record 17 of 71
+==31270==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31270==    by 0x10EB9F: ft_calloc (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109C30: new_token (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109CB3: tokendup (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A2E7: append_command_elem (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A52F: simple_command (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A09D: pipeline (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109FEB: parse (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10952E: interpret (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109620: main (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==
+==31270== 88 bytes in 1 blocks are still reachable in loss record 23 of 71
+==31270==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31270==    by 0x10EB9F: ft_calloc (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A00B: new_command (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A056: pipeline (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109FEB: parse (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10952E: interpret (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109620: main (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==
+==31270== 88 bytes in 1 blocks are still reachable in loss record 24 of 71
+==31270==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31270==    by 0x10EB9F: ft_calloc (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A00B: new_command (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A513: simple_command (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10A09D: pipeline (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109FEB: parse (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x10952E: interpret (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==    by 0x109620: main (in /home/rhonda/minishell/next_minishell/minishell)
+==31270==
+main
+kind: 0
+kind: 1
+kind: 0
+kind: 1
+minishell$

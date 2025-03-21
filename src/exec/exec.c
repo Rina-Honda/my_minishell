@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/20 23:06:12 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/21 21:32:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	validate_access(const char *path, t_command *node, t_shell *shell, char **argv)
+void	validate_access(const char *path, t_command *node,
+	t_shell *shell, char **argv)
 {
-	char	*filename;
-
-	filename = node->command->args->word;
 	if (path == NULL)
 	{
 		free_argv(argv);
@@ -29,12 +27,11 @@ void	validate_access(const char *path, t_command *node, t_shell *shell, char **a
 	}
 }
 
-void	validate_access_02(const char *path, t_command *node, t_shell *shell, char **argv)
+void	validate_access_02(const char *path, t_command *node,
+	t_shell *shell, char **argv)
 {
 	struct stat	st;
-	char	*filename;
 
-	filename = node->command->args->word;
 	if (stat(path, &st) == -1)
 	{
 		free_argv(argv);
@@ -68,36 +65,39 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	validate_access_02(path, node, shell, argv);
 	env = get_environ(shell->envmap);
 	execve(path, argv, env);
+	free(path);
 	free(argv);
 	free_argv(env);
 	reset_redirect(node->command->redirects);
 	fatal_error("execve");
 }
 
-static pid_t	exec_pipeline(t_command *node, t_shell *shell)
+static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 {
 	pid_t		pid;
 
-	if (!node)
+	if (!current)
 		return (-1);
-	prepare_pipe(node);
+	prepare_pipe(current);
 	pid = fork();
 	if (pid < 0)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
 		reset_signal();
-		if (open_redirect_file(node, shell) < 0)
+		if (open_redirect_file(current, shell) < 0)
 			exit(EXIT_FAILURE);
-		prepare_pipe_child(node);
-		if (is_builtin(node))
-			exit(exec_builtin(node, shell));
+		prepare_pipe_child(current);
+		if (is_builtin(current))
+			exit(exec_builtin(current, shell, node));
 		else
-			exec_nonbuiltin(node, shell);
+			exec_nonbuiltin(current, shell);
 	}
-	prepare_pipe_parent(node);
-	if (node->next)
-		return (exec_pipeline(node->next, shell));
+	printf("h\n");
+	prepare_pipe_parent(current);
+	printf("i\n");
+	if (current->next)
+		return (exec_pipeline(current->next, shell, node));
 	return (pid);
 }
 
@@ -105,7 +105,7 @@ int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
 
-	last_pid = exec_pipeline(node, shell);
+	last_pid = exec_pipeline(node, shell, node);
 	shell->last_status = wait_pipeline(last_pid);
 	return (shell->last_status);
 }

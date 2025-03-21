@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/20 21:58:34 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/21 21:31:53 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int			map_set(t_map *map, const char *name, const char *value);
 
 // builtin
 bool		is_builtin(t_command *node);
-int			exec_builtin(t_command *node, t_shell *shell);
+int			exec_builtin(t_command *current, t_shell *shell, t_command *node);
 int			builtin_exit(char **argv, t_shell *shell, t_command *node);
 int			builtin_export(char **argv, t_shell *shell);
 int			builtin_unset(char **argv, t_shell *shell);
