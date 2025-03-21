@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/20 19:00:52 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/20 21:58:34 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ int			builtin_pwd(char **argv, t_shell *shell);
 
 // error
 void		fatal_error(const char *msg) __attribute__((noreturn));
-void		err_exit(const char *locatino, const char *msg, int status)
+void		err_exit(t_command *node, const char *msg, int status, t_shell *shell)
 			__attribute__((noreturn));
 void		assert_error(const char *msg)__attribute__((noreturn));
 void		todo(const char *msg)__attribute__((noreturn));
