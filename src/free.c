@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 00:35:06 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:04:37 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/21 21:38:35 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void	free_token(t_token *token)
 	if (token == NULL)
 		return ;
 	if (token->word)
-	{
-		// printf("now freed: %s\n", token->word);
 		free(token->word);
-	}
 	free_token(token->next);
 	free(token);
 }
@@ -44,7 +41,6 @@ void	free_node(t_command *node)
 {
 	if (!node)
 		return ;
-	printf("kind: %d\n", node->kind);
 	free_token(node->args);
 	free_token(node->filename);
 	free_token(node->delimiter);

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:32:21 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/21 21:36:18 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,7 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 		else
 			exec_nonbuiltin(current, shell);
 	}
-	printf("h\n");
 	prepare_pipe_parent(current);
-	printf("i\n");
 	if (current->next)
 		return (exec_pipeline(current->next, shell, node));
 	return (pid);

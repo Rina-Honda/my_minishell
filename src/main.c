@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:02:15 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/21 21:37:24 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	interpret(char *line, t_shell *shell)
 			expand(node, shell);
 			shell->last_status = exec(node, shell);
 		}
-		printf("main\n");
 		free_node(node);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 18:15:18 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:15:59 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/21 21:40:06 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	builtin_pwd(char **argv, t_shell *shell)
 	{
 		write(STDOUT_FILENO, pwd, ft_strlen(pwd));
 		write(STDOUT_FILENO, "\n", 1);
-		printf("c\n");
 		return (0);
 	}
 }

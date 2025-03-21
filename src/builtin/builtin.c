@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:30:14 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/21 21:39:45 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	exec_builtin(t_command *current, t_shell *shell, t_command *node)
 	int		status;
 	char	**argv;
 
-	printf("a\n");
 	do_redirect(current->command->redirects);
 	argv = token_list_to_argv(current->command->args);
 	if (ft_strcmp(argv[0], "exit") == 0)
@@ -61,21 +60,12 @@ int	exec_builtin(t_command *current, t_shell *shell, t_command *node)
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		status = builtin_echo(argv);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-	{
-		printf("b\n");
 		status = builtin_pwd(argv, shell);
-	}
 	else
 		todo("exec_builtin");
-	printf("d\n");
 	free_argv(argv);
-	printf("e\n");
 	reset_redirect(current->command->redirects);
-	printf("f\n");
 	free_map(shell->envmap);
-	printf("g\n");
-	printf("builtin\n");
 	free_node(node);
-	printf("h\n");
 	return (status);
 }
