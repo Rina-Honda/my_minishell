@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:39:45 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/22 22:44:11 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,5 @@ int	exec_builtin(t_command *current, t_shell *shell, t_command *node)
 		todo("exec_builtin");
 	free_argv(argv);
 	reset_redirect(current->command->redirects);
-	free_map(shell->envmap);
-	free_node(node);
 	return (status);
 }

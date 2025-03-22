@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:36:18 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/22 22:44:55 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 {
 	pid_t		pid;
+	int status;
 
 	if (!current)
 		return (-1);
@@ -89,7 +90,12 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 			exit(EXIT_FAILURE);
 		prepare_pipe_child(current);
 		if (is_builtin(current))
-			exit(exec_builtin(current, shell, node));
+		{
+			status = exec_builtin(current, shell, node);
+			free_map(shell->envmap);
+			free_node(node);
+			exit(status);
+		}
 		else
 			exec_nonbuiltin(current, shell);
 	}
@@ -103,6 +109,8 @@ int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
 
+	if (is_builtin(node) && node->next == NULL)
+		return (exec_builtin(node, shell, node));
 	last_pid = exec_pipeline(node, shell, node);
 	shell->last_status = wait_pipeline(last_pid);
 	return (shell->last_status);
