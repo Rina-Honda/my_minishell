@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:31:53 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:33:39 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,11 @@ typedef struct s_map
 
 typedef struct s_shell
 {
-	bool	syntax_error;
-	int		last_status;
-	bool	readline_interrupted;
-	t_map	*envmap;
+	bool		syntax_error;
+	int			last_status;
+	bool		readline_interrupted;
+	t_map		*envmap;
+	t_command	*node_head;
 }	t_shell;
 
 // global variable
@@ -202,7 +203,8 @@ int			builtin_pwd(char **argv, t_shell *shell);
 
 // error
 void		fatal_error(const char *msg) __attribute__((noreturn));
-void		err_exit(t_command *node, const char *msg, int status, t_shell *shell)
+void		err_exit(t_command *current, const char *msg,
+				int status, t_shell *shell)
 			__attribute__((noreturn));
 void		assert_error(const char *msg)__attribute__((noreturn));
 void		todo(const char *msg)__attribute__((noreturn));
