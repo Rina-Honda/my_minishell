@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 13:12:08 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:28:17 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ int	main(void)
 		if (*line)
 			add_history(line);
 		if (*line == '\0')
+		{
 			readline_enter(&shell, line);
+			continue ;
+		}
 		interpret(line, &shell);
 		free(line);
 	}

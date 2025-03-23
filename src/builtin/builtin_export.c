@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 13:48:40 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 13:16:59 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:27:04 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	print_all_env(t_shell *shell)
 	{
 		if (current->value)
 			ft_dprintf(STDOUT_FILENO, 
-					"declare -x %s=\"%s\"\n", current->name, current->value);
+				"declare -x %s=\"%s\"\n", current->name, current->value);
 		else
 			ft_dprintf(STDOUT_FILENO, "declare -x %s\n", current->name);
 		current = current->next;
