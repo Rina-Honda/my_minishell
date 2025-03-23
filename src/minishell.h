@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:31:53 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:12:55 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,8 @@ void		expand_quote_removal_recursive(t_command *node);
 void		append_char(char **s, char c);
 void		expand_variable_recursive(t_command *node, t_shell *shell);
 bool		is_variable(char *s);
-void		expand_variable_str(char **dst, char **rest, char *ptr, t_shell *shell);
+void		expand_variable_str(char **dst, char **rest,
+				char *ptr, t_shell *shell);
 bool		is_special_parameter(char *s);
 void		expand_special_parameter_str(char **dst, char **rest,
 				char *ptr, t_shell *shell);
@@ -165,6 +166,9 @@ void		prepare_pipe_parent(t_command *node);
 
 // signal
 void		setup_signal(void);
+int			check_state(void);
+bool		readline_sigint(t_shell *shell, char *line);
+void		readline_enter(t_shell *shell, char *line);
 void		setup_sigint_with_signum(void);
 void		handler_signum(int signum);
 void		setup_sigint_newline(void);
@@ -203,7 +207,7 @@ int			builtin_pwd(char **argv, t_shell *shell);
 // error
 void		fatal_error(const char *msg) __attribute__((noreturn));
 void		err_exit(t_command *node, const char *msg, int status, t_shell *shell)
-			__attribute__((noreturn));
+				__attribute__((noreturn));
 void		assert_error(const char *msg)__attribute__((noreturn));
 void		todo(const char *msg)__attribute__((noreturn));
 void		tokenize_error(const char *location, char **rest,
