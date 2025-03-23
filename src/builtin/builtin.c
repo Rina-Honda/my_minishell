@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:21:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/22 22:44:11 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/23 23:49:09 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exec_builtin(t_command *current, t_shell *shell, t_command *node)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		status = builtin_pwd(argv, shell);
 	else
-		todo("exec_builtin");
+		assert_error("exec_builtin");
 	free_argv(argv);
 	reset_redirect(current->command->redirects);
 	return (status);
