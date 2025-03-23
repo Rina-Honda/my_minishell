@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/21 21:37:24 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 12:09:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,31 @@ static void	interpret(char *line, t_shell *shell)
 	}
 }
 
+static void	init_shell(t_shell *shell)
+{
+	shell->last_status = 0;
+	shell->syntax_error = false;
+	shell->readline_interrupted = false;
+	init_env(shell);
+}
+
 int	main(void)
 {
 	char	*line;
 	t_shell	shell;
 
-	shell.last_status = 0;
-	shell.syntax_error = false;
-	shell.readline_interrupted = false;
-	init_env(&shell);
+	init_shell(&shell);
 	setup_signal();
 	while (1)
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
+		{
+			g_sig = 0;
 			break ;
+		}
+		if (readline_sigint(&shell, line))
+			continue ;
 		if (*line)
 			add_history(line);
 		interpret(line, &shell);

@@ -6,7 +6,7 @@
 #    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/18 11:43:34 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/23 12:11:11 by rhonda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS = src/main.c \
 	src/exec/wait.c \
 	src/signal/signal.c \
 	src/signal/signal_handler.c \
+	src/signal/signal_readline.c \
 	src/environ/env.c \
 	src/environ/map.c \
 	src/environ/map_set.c \
