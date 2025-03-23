@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/22 22:44:55 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/23 15:39:47 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,9 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 	{
 		reset_signal();
 		if (open_redirect_file(current, shell) < 0)
+		{
 			exit(EXIT_FAILURE);
+		}
 		prepare_pipe_child(current);
 		if (is_builtin(current))
 		{
@@ -97,7 +99,9 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 			exit(status);
 		}
 		else
+		{
 			exec_nonbuiltin(current, shell);
+		}
 	}
 	prepare_pipe_parent(current);
 	if (current->next)
@@ -110,7 +114,11 @@ int	exec(t_command *node, t_shell *shell)
 	pid_t	last_pid;
 
 	if (is_builtin(node) && node->next == NULL)
+	{
+		if (open_redirect_file(node, shell) < 0)
+			return (EXIT_FAILURE);
 		return (exec_builtin(node, shell, node));
+	}
 	last_pid = exec_pipeline(node, shell, node);
 	shell->last_status = wait_pipeline(last_pid);
 	return (shell->last_status);
