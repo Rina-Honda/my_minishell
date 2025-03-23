@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 12:47:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 12:10:14 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:11:34 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,10 @@ bool	readline_sigint(t_shell *shell, char *line)
 		return (true);
 	}
 	return (false);
+}
+
+void	readline_enter(t_shell *shell, char *line)
+{
+	shell->last_status = 0;
+	free(line);
 }

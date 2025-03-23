@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:30:51 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 12:09:28 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:12:08 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,13 @@ int	main(void)
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
-		{
-			g_sig = 0;
 			break ;
-		}
 		if (readline_sigint(&shell, line))
 			continue ;
 		if (*line)
 			add_history(line);
+		if (*line == '\0')
+			readline_enter(&shell, line);
 		interpret(line, &shell);
 		free(line);
 	}

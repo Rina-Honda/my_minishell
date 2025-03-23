@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 12:10:09 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:12:55 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ void		prepare_pipe_parent(t_command *node);
 void		setup_signal(void);
 int			check_state(void);
 bool		readline_sigint(t_shell *shell, char *line);
+void		readline_enter(t_shell *shell, char *line);
 void		setup_sigint_with_signum(void);
 void		handler_signum(int signum);
 void		setup_sigint_newline(void);
