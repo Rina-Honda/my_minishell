@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 18:53:12 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/23 22:26:30 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,13 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 
 	do_redirect(node->command->redirects);
 	argv = token_list_to_argv(node->command->args);
+	if (argv[0][0] == '\0')
+	{
+		free_argv(argv);
+		free_node(node);
+		free_map(shell->envmap);
+		exit(EXIT_FAILURE);
+	}
 	path = argv[0];
 	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path, shell);
@@ -73,7 +80,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	env = get_environ(shell->envmap);
 	execve(path, argv, env);
 	free(path);
-	free(argv);
+	free_argv(argv);
 	free_argv(env);
 	reset_redirect(node->command->redirects);
 	fatal_error("execve");
