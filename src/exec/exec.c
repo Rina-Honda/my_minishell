@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 15:39:47 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/23 18:53:12 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ void	validate_access_02(const char *path, t_command *node,
 {
 	struct stat	st;
 
+	if (node->command->args->word[0] == '\0')
+	{
+		free(argv);
+		free_node(node);
+		free_map(shell->envmap);
+		exit(0);
+	}
 	if (stat(path, &st) == -1)
 	{
 		free_argv(argv);
@@ -116,7 +123,7 @@ int	exec(t_command *node, t_shell *shell)
 	if (is_builtin(node) && node->next == NULL)
 	{
 		if (open_redirect_file(node, shell) < 0)
-			return (EXIT_FAILURE);
+			return (1);
 		return (exec_builtin(node, shell, node));
 	}
 	last_pid = exec_pipeline(node, shell, node);
