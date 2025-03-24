@@ -86,10 +86,12 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	fatal_error("execve");
 }
 
-static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
+// TODO 関数を分割する
+static pid_t	exec_pipeline(t_command *current, t_shell *shell
+	, t_command *node)
 {
 	pid_t		pid;
-	int status;
+	int			status;
 
 	if (!current)
 		return (-1);
@@ -101,9 +103,7 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell, t_command *node)
 	{
 		reset_signal();
 		if (open_redirect_file(current, shell) < 0)
-		{
 			exit(EXIT_FAILURE);
-		}
 		prepare_pipe_child(current);
 		if (is_builtin(current))
 		{

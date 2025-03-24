@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
 /*   Updated: 2025/03/24 00:10:24 by rhonda           ###   ########.fr       */
@@ -33,14 +33,13 @@ static void	free_all(char **argv, t_command *node, t_shell *shell)
 {
 	if (argv)
 		free_argv(argv);
-	// if (arg)
-	// 	free(arg);
 	if (shell->envmap)
 		free_map(shell->envmap);
 	if (node)
 		free_node(node);
 }
 
+// TODO 関数を分割する
 int	builtin_exit(char **argv, t_shell *shell, t_command *node)
 {
 	long	result;

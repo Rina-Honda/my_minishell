@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:43:22 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 18:42:28 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/24 15:05:23 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	openfd(t_command *node, t_shell *shell)
 		assert_error("open_redirect_file");
 }
 
+// TODO 関数を分割する
 int	open_redirect_file(t_command *node, t_shell *shell)
 {
 	if (!node)
@@ -46,17 +47,15 @@ int	open_redirect_file(t_command *node, t_shell *shell)
 		return (0);
 	}
 	else if (node->kind == SIMPLE_CMD)
-	{
-		return open_redirect_file(node->redirects, shell);
-	}
+		return (open_redirect_file(node->redirects, shell));
 	node->filefd = openfd(node, shell);
 	if (node->filefd < 0)
 	{
-		if (node->kind == REDIR_OUT || node->kind == REDIR_IN || node->kind == REDIR_APPEND)
+		if (node->kind == REDIR_OUT || node->kind == REDIR_IN
+			|| node->kind == REDIR_APPEND)
 			xperror(node->filename->word);
 		return (-1);
 	}
 	node->filefd = stashfd(node->filefd);
-	return open_redirect_file(node->next, shell);
+	return (open_redirect_file(node->next, shell));
 }
-
