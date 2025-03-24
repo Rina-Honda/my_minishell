@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 10:00:09 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 16:16:25 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/25 08:36:43 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	wait_pipeline(pid_t last_pid)
 	int		status;
 	int		wstatus;
 
-	setup_sigint_newline();
+	ignore_sig(SIGINT);
 	while (1)
 	{
 		wait_result = wait(&wstatus);
