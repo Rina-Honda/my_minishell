@@ -6,7 +6,7 @@
 /*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:44:22 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 16:29:50 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/25 08:34:28 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ static void	heredoc_loop(int pipefd[2], const char *delimiter, t_shell *shell)
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (shell->readline_interrupted)
+		if (readline_sigint(shell, line))
 		{
-			free(line);
-			break ;
+			free_node(shell->node_head);
+			free_map(shell->envmap);
+			exit(130);
 		}
 		if (ft_strcmp(line, delimiter) == 0)
 		{

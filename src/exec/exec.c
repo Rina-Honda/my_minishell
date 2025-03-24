@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 23:01:08 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/25 08:31:00 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 		free_map(shell->envmap);
 		exit(EXIT_FAILURE);
 	}
-	path = argv[0];
-	if (ft_strchr(path, '/') == NULL)
-		path = search_path(path, shell);
+	if (ft_strchr(argv[0], '/') == NULL)
+		path = search_path(argv[0], shell);
+	else
+		path = argv[0];
 	validate_access(path, shell, argv);
 	validate_access_02(path, node, shell, argv);
 	env = get_environ(shell->envmap);
@@ -82,6 +83,8 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	free_argv(argv);
 	free_argv(env);
 	reset_redirect(node->command->redirects);
+	free_map(shell->envmap);
+	free_node(shell->node_head);
 	fatal_error("execve");
 }
 
@@ -100,9 +103,17 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		reset_signal();
+		setup_sigint_with_signum();
 		if (open_redirect_file(current, shell) < 0)
-			exit(EXIT_FAILURE);
+		{
+			printf("g_sig: %d\n", g_sig);
+			
+			free_node(shell->node_head);
+			free_map(shell->envmap);
+			printf("last_status: %d\n", shell->last_status);
+			exit(shell->last_status);
+		}
+		reset_signal();
 		prepare_pipe_child(current);
 		if (is_builtin(current))
 		{
