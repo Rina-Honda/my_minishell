@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 16:48:30 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/24 01:19:21 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,7 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell
 			exit(status);
 		}
 		else
-		{
 			exec_nonbuiltin(current, shell);
-		}
 	}
 	prepare_pipe_parent(current);
 	if (current->next)
