@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 16:48:30 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/24 21:40:07 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	validate_access(const char *path, t_command *node,
 	if (path == NULL)
 	{
 		free_argv(argv);
-		err_exit(node, "command not found", 127, shell);
+		cmd_err_exit(node, 127, shell);
 	}
 	if (access(path, F_OK) < 0)
 	{
 		free_argv(argv);
-		err_exit(node, "command not found", 127, shell);
+		cmd_err_exit(node, 127, shell);
 	}
 }
 
@@ -123,10 +123,37 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell
 	return (pid);
 }
 
+void print_cmd_not_found(t_command *node, t_shell *shell)
+{
+	char	*path;
+	t_command *cur = node;
+
+	while (cur)
+	{
+		if (!is_builtin(cur))
+		{
+			char **argv = token_list_to_argv(cur->command->args);
+			path = argv[0];
+			if (ft_strchr(path, '/') == NULL)
+			{
+				path = search_path(path, shell);
+			}
+			if (path == NULL && argv[0][0] != '\0')
+				printf("command not found: %s\n", argv[0]);
+			else if (access(path, F_OK) < 0 && argv[0][0] != '\0')
+				printf("command not found: %s\n", argv[0]);
+			free_argv(argv);
+		}
+		cur = cur->next;
+	}
+	free_node(cur);
+}
+
 int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
 
+	print_cmd_not_found(node, shell);
 	if (is_builtin(node) && node->next == NULL)
 	{
 		if (open_redirect_file(node, shell) < 0)
