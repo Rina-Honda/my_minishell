@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 15:05:41 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/24 00:10:24 by rhonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ bool	is_numeric(char *s)
 	return (true);
 }
 
-static void	free_all(char *arg, t_command *node, t_shell *shell)
+static void	free_all(char **argv, t_command *node, t_shell *shell)
 {
-	if (arg)
-		free(arg);
+	if (argv)
+		free_argv(argv);
 	if (shell->envmap)
 		free_map(shell->envmap);
 	if (node)
@@ -49,8 +49,7 @@ int	builtin_exit(char **argv, t_shell *shell, t_command *node)
 	arg = NULL;
 	if (!argv[1])
 	{
-		free_all(arg, node, shell);
-		free_argv(argv);
+		free_all(argv, node, shell);
 		exit(shell->last_status);
 	}
 	if (argv[2])
@@ -65,11 +64,11 @@ int	builtin_exit(char **argv, t_shell *shell, t_command *node)
 		result = ft_strtol(arg, &end_ptr, 10);
 		if (errno == 0 && *end_ptr == '\0')
 		{
-			free_all(arg, node, shell);
+			free_all(argv, node, shell);
 			exit((unsigned char)result);
 		}
 	}
-	free_all(arg, node, shell);
+	free_all(argv, shell->node_head, shell);
 	builtin_error("exit", NULL, "numeric argument required");
 	exit(2);
 }

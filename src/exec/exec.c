@@ -6,24 +6,23 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 21:40:07 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/24 23:01:08 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	validate_access(const char *path, t_command *node,
-	t_shell *shell, char **argv)
+void	validate_access(const char *path, t_shell *shell, char **argv)
 {
 	if (path == NULL)
 	{
 		free_argv(argv);
-		cmd_err_exit(node, 127, shell);
+		cmd_err_exit(127, shell);
 	}
 	if (access(path, F_OK) < 0)
 	{
 		free_argv(argv);
-		cmd_err_exit(node, 127, shell);
+		cmd_err_exit(127, shell);
 	}
 }
 
@@ -75,7 +74,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	path = argv[0];
 	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path, shell);
-	validate_access(path, node, shell, argv);
+	validate_access(path, shell, argv);
 	validate_access_02(path, node, shell, argv);
 	env = get_environ(shell->envmap);
 	execve(path, argv, env);
@@ -113,9 +112,7 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell
 			exit(status);
 		}
 		else
-		{
 			exec_nonbuiltin(current, shell);
-		}
 	}
 	prepare_pipe_parent(current);
 	if (current->next)
@@ -130,19 +127,20 @@ void print_cmd_not_found(t_command *node, t_shell *shell)
 
 	while (cur)
 	{
-		if (!is_builtin(cur))
+		if (cur->command && cur->command->args && !is_builtin(cur))
 		{
 			char **argv = token_list_to_argv(cur->command->args);
 			path = argv[0];
 			if (ft_strchr(path, '/') == NULL)
-			{
 				path = search_path(path, shell);
-			}
+			else
+				path = ft_strdup(argv[0]);
 			if (path == NULL && argv[0][0] != '\0')
-				printf("command not found: %s\n", argv[0]);
+				ft_dprintf(STDERR_FILENO, "minishell: command not found: %s\n", argv[0]);
 			else if (access(path, F_OK) < 0 && argv[0][0] != '\0')
-				printf("command not found: %s\n", argv[0]);
+				ft_dprintf(STDERR_FILENO, "minishell: command not found: %s\n", argv[0]);
 			free_argv(argv);
+			free(path);
 		}
 		cur = cur->next;
 	}
@@ -153,7 +151,6 @@ int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
 
-	print_cmd_not_found(node, shell);
 	if (is_builtin(node) && node->next == NULL)
 	{
 		if (open_redirect_file(node, shell) < 0)
@@ -162,5 +159,6 @@ int	exec(t_command *node, t_shell *shell)
 	}
 	last_pid = exec_pipeline(node, shell, node);
 	shell->last_status = wait_pipeline(last_pid);
+	print_cmd_not_found(node, shell);
 	return (shell->last_status);
 }
