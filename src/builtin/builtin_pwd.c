@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 18:15:18 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/22 22:41:00 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/24 14:54:36 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ bool	is_equal_inode(const char *path1, const char *path2)
 		return (false);
 	return (st1.st_ino == st2.st_ino);
 }
-
 
 int	builtin_pwd(char **argv, t_shell *shell)
 {
