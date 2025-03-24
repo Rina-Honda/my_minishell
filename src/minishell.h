@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/23 23:49:43 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/24 22:38:41 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ typedef struct s_map
 
 typedef struct s_shell
 {
-	bool		syntax_error;
-	int			last_status;
-	bool		readline_interrupted;
-	t_map		*envmap;
+	bool	syntax_error;
+	int		last_status;
+	bool	readline_interrupted;
+	t_map	*envmap;
 	t_command	*node_head;
 }	t_shell;
 
@@ -207,10 +207,12 @@ int			builtin_pwd(char **argv, t_shell *shell);
 
 // error
 void		fatal_error(const char *msg) __attribute__((noreturn));
+void		cmd_err_exit(int status, t_shell *shell)
+				__attribute__((noreturn));
 void		err_exit(t_command *node, const char *msg, int status, t_shell *shell)
 				__attribute__((noreturn));
 void		assert_error(const char *msg)__attribute__((noreturn));
-// void		todo(const char *msg)__attribute__((noreturn));
+void		todo(const char *msg)__attribute__((noreturn));
 void		tokenize_error(const char *location, char **rest,
 				char *line, t_shell *shell);
 void		parse_error(const char *location, t_token **rest, t_token *token,

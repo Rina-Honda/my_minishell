@@ -3,27 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 01:19:21 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/24 23:01:08 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	validate_access(const char *path, t_command *node,
-	t_shell *shell, char **argv)
+void	validate_access(const char *path, t_shell *shell, char **argv)
 {
 	if (path == NULL)
 	{
 		free_argv(argv);
-		err_exit(node, "command not found", 127, shell);
+		cmd_err_exit(127, shell);
 	}
 	if (access(path, F_OK) < 0)
 	{
 		free_argv(argv);
-		err_exit(node, "command not found", 127, shell);
+		cmd_err_exit(127, shell);
 	}
 }
 
@@ -75,7 +74,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	path = argv[0];
 	if (ft_strchr(path, '/') == NULL)
 		path = search_path(path, shell);
-	validate_access(path, node, shell, argv);
+	validate_access(path, shell, argv);
 	validate_access_02(path, node, shell, argv);
 	env = get_environ(shell->envmap);
 	execve(path, argv, env);
@@ -121,6 +120,33 @@ static pid_t	exec_pipeline(t_command *current, t_shell *shell
 	return (pid);
 }
 
+void print_cmd_not_found(t_command *node, t_shell *shell)
+{
+	char	*path;
+	t_command *cur = node;
+
+	while (cur)
+	{
+		if (cur->command && cur->command->args && !is_builtin(cur))
+		{
+			char **argv = token_list_to_argv(cur->command->args);
+			path = argv[0];
+			if (ft_strchr(path, '/') == NULL)
+				path = search_path(path, shell);
+			else
+				path = ft_strdup(argv[0]);
+			if (path == NULL && argv[0][0] != '\0')
+				ft_dprintf(STDERR_FILENO, "minishell: command not found: %s\n", argv[0]);
+			else if (access(path, F_OK) < 0 && argv[0][0] != '\0')
+				ft_dprintf(STDERR_FILENO, "minishell: command not found: %s\n", argv[0]);
+			free_argv(argv);
+			free(path);
+		}
+		cur = cur->next;
+	}
+	free_node(cur);
+}
+
 int	exec(t_command *node, t_shell *shell)
 {
 	pid_t	last_pid;
@@ -133,5 +159,6 @@ int	exec(t_command *node, t_shell *shell)
 	}
 	last_pid = exec_pipeline(node, shell, node);
 	shell->last_status = wait_pipeline(last_pid);
+	print_cmd_not_found(node, shell);
 	return (shell->last_status);
 }
