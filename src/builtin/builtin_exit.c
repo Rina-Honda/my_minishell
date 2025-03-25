@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:16:58 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 00:10:24 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/25 19:10:21 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,33 @@ static void	free_all(char **argv, t_command *node, t_shell *shell)
 		free_node(node);
 }
 
-// TODO 関数を分割する
+static int	check_exit_argument_error(char **argv)
+{
+	if (argv[2])
+	{
+		builtin_error("exit", NULL, "too many arguments");
+		return (1);
+	}
+	return (0);
+}
+
+static int	parse_exit_argument(char *arg, long *result)
+{
+	char	*end_ptr;
+
+	if (!is_numeric(arg))
+		return (0);
+	errno = 0;
+	*result = ft_strtol(arg, &end_ptr, 10);
+	if (errno == 0 && *end_ptr == '\0')
+		return (1);
+	return (0);
+}
+
 int	builtin_exit(char **argv, t_shell *shell, t_command *node)
 {
 	long	result;
 	char	*arg;
-	char	*end_ptr;
 
 	arg = NULL;
 	if (!argv[1])
@@ -52,21 +73,12 @@ int	builtin_exit(char **argv, t_shell *shell, t_command *node)
 		free_all(argv, node, shell);
 		exit(shell->last_status);
 	}
-	if (argv[2])
-	{
-		builtin_error("exit", NULL, "too many arguments");
+	if (check_exit_argument_error(argv))
 		return (1);
-	}
-	arg = argv[1];
-	if (is_numeric(arg))
+	if (parse_exit_argument(argv[1], &result))
 	{
-		errno = 0;
-		result = ft_strtol(arg, &end_ptr, 10);
-		if (errno == 0 && *end_ptr == '\0')
-		{
-			free_all(argv, node, shell);
-			exit((unsigned char)result);
-		}
+		free_all(argv, node, shell);
+		exit((unsigned char)result);
 	}
 	free_all(argv, shell->node_head, shell);
 	builtin_error("exit", NULL, "numeric argument required");

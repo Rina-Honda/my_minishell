@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+         #
+#    By: msawada <msawada@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/07 23:22:26 by rhonda            #+#    #+#              #
-#    Updated: 2025/03/23 12:11:11 by rhonda           ###   ########.fr        #
+#    Updated: 2025/03/25 19:02:07 by msawada          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,8 @@ SRCS = src/main.c \
 	src/exec/exec.c \
 	src/exec/search_path.c \
 	src/exec/wait.c \
+	src/exec/check_cmd.c \
+	src/exec/validate_access.c \
 	src/signal/signal.c \
 	src/signal/signal_handler.c \
 	src/signal/signal_readline.c \

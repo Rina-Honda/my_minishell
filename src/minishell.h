@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/24 22:38:41 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/25 18:58:46 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ typedef struct s_map
 
 typedef struct s_shell
 {
-	bool	syntax_error;
-	int		last_status;
-	bool	readline_interrupted;
-	t_map	*envmap;
-	t_command	*node_head;
+	bool						syntax_error;
+	int							last_status;
+	bool						readline_interrupted;
+	t_map						*envmap;
+	t_command					*node_head;
 }	t_shell;
 
 // global variable
@@ -152,6 +152,10 @@ int			exec(t_command *node, t_shell *shell);
 int			exec_nonbuiltin(t_command *node, t_shell *shell);
 char		*search_path(const char *filename, t_shell *shell);
 int			wait_pipeline(pid_t last_pid);
+void		print_cmd_not_found(t_command *node, t_shell *shell);
+void		validate_access(const char *path, t_shell *shell, char **argv);
+void		validate_access_02(const char *path,
+				t_command *node, t_shell *shell, char **argv);
 
 // redirect
 int			open_redirect_file(t_command *node, t_shell *shell);
@@ -207,10 +211,10 @@ int			builtin_pwd(char **argv, t_shell *shell);
 
 // error
 void		fatal_error(const char *msg) __attribute__((noreturn));
-void		cmd_err_exit(int status, t_shell *shell)
-				__attribute__((noreturn));
-void		err_exit(t_command *node, const char *msg, int status, t_shell *shell)
-				__attribute__((noreturn));
+void		cmd_err_exit(int status,
+				t_shell *shell)__attribute__((noreturn));
+void		err_exit(t_command *node, const char *msg,
+				int status, t_shell *shell)__attribute__((noreturn));
 void		assert_error(const char *msg)__attribute__((noreturn));
 void		todo(const char *msg)__attribute__((noreturn));
 void		tokenize_error(const char *location, char **rest,
