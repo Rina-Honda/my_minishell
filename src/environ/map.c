@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 22:21:44 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/18 10:13:32 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/25 21:15:11 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_map	*map_new(void)
 {
 	t_map	*map;
 
-	map = calloc(1, sizeof(*map));
+	map = ft_calloc(1, sizeof(*map));
 	if (!map)
 		fatal_error("calloc");
 	return (map);

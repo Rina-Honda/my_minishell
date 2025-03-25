@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rhonda <rhonda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 23:00:09 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/25 01:28:57 by rhonda           ###   ########.fr       */
+/*   Updated: 2025/03/25 20:49:51 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	*search_path(const char *filename, t_shell *shell)
 	char	*dup;
 
 	value = ft_getenv("PATH", shell);
+	if (!value || value[0] == '\0')
+		return (NULL);
 	while (*value)
 	{
 		ft_bzero(path, PATH_MAX);

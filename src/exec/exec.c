@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 06:55:46 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/25 20:10:29 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/25 20:58:45 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	exec_nonbuiltin(t_command *node, t_shell *shell)
 	if (ft_strchr(argv[0], '/') == NULL)
 		path = search_path(argv[0], shell);
 	else
-		path = argv[0];
+		path = ft_strdup(argv[0]);
 	validate_access(path, shell, argv);
 	validate_access_02(path, node, shell, argv);
 	env = get_environ(shell->envmap);
