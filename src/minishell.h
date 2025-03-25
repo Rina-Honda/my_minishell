@@ -6,7 +6,7 @@
 /*   By: msawada <msawada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 23:32:21 by rhonda            #+#    #+#             */
-/*   Updated: 2025/03/25 18:58:46 by msawada          ###   ########.fr       */
+/*   Updated: 2025/03/25 21:00:37 by msawada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,8 @@ int			exec_nonbuiltin(t_command *node, t_shell *shell);
 char		*search_path(const char *filename, t_shell *shell);
 int			wait_pipeline(pid_t last_pid);
 void		print_cmd_not_found(t_command *node, t_shell *shell);
-void		validate_access(const char *path, t_shell *shell, char **argv);
-void		validate_access_02(const char *path,
+void		validate_access(char *path, t_shell *shell, char **argv);
+void		validate_access_02(char *path,
 				t_command *node, t_shell *shell, char **argv);
 
 // redirect
